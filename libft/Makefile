@@ -15,11 +15,6 @@ OBJSDIR = objs/
 OBJS = $(SRCS:%.c=$(OBJSDIR)%.o)
 INCLUDES = -I./
 
-NAME_DEBUG = libftdebug.a
-OBJSDIR_DEBUG = objs_debug/
-OBJS_DEBUG = $(SRCS:%.c=$(OBJSDIR_DEBUG)%.o)
-INCLUDES_DEBUG = $(INCLUDES)
-
 vpath %.c $(SRCSDIR)
 vpath %.h includes/
 vpath %.o $(OBJSDIR)
@@ -31,18 +26,11 @@ $(OBJSDIR)%.o: %.c
 	@mkdir -p $(OBJSDIR)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-debug: $(NAME_DEBUG)
-$(NAME_DEBUG): $(OBJS_DEBUG)
-	ar rcs $@ $^
-$(OBJSDIR_DEBUG)%.o: %.c
-	@mkdir -p $(OBJSDIR_DEBUG)
-	$(CC) $(CFLAGS_DEBUG) $(INCLUDES) -c $< -o $@
-
 clean:
-	rm -rf $(OBJS) $(OBJS_DEBUG)
+	rm -rf $(OBJS)
 
 fclean: clean
-	rm -f $(NAME) $(NAME_DEBUG)
+	rm -f $(NAME)
 
 re: fclean all
 
