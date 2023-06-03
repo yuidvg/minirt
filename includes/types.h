@@ -16,6 +16,13 @@
 # define WIDTH 800
 # define HEIGHT 600
 
+typedef enum e_object_type
+{
+	SPHERE,
+	PLANE,
+	CYLINDER,
+}	t_object_type;
+
 typedef struct s_vector3
 {
 	double	x;
@@ -23,25 +30,52 @@ typedef struct s_vector3
 	double	z;
 }	t_vector3;
 
-typedef struct s_sphere
+typedef struct s_color
 {
-	t_vector3	position;
-	double		radius;
-	int			color;
-}	t_sphere;
+	int		red;
+	int		green;
+	int		blue;
+}	t_color;
 
-typedef struct s_plane
+typedef struct s_ambient
+{
+	double	ratio;
+	t_color	color;
+}	t_ambient;
+
+typedef struct s_camera
 {
 	t_vector3	position;
-	t_vector3	normal;
-	int			color;
-}	t_plane;
+	t_vector3	orientation;
+	int			fov;
+}	t_camera;
+
+typedef struct s_light
+{
+	t_vector3	position;
+	double		blightness;
+	t_color		color;
+}	t_light;
+
+typedef struct s_object
+{
+	t_object_type	type;
+	t_color			color;
+	t_vector3		position;
+	double			diameter;
+	double			height;
+	t_vector3		axis;
+
+	struct s_object	*next;
+}	t_object;
 
 typedef struct s_scene
 {
-	t_sphere	sphere;
-	t_vector3	light;
-	t_plane		plane;
+	t_ambient	ambient;
+	t_camera	camera;
+	t_light		light;
+
+	t_object	*objects;
 }	t_scene;
 
 #endif

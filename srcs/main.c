@@ -12,7 +12,7 @@
 
 #include "../includes/main.h"
 
-void render_plane(t_scene scene, void *mlx, void *window, int x, int y, t_vector3 ray_direction, t_vector3 ray_origin)
+void render_plane(t_scene_test scene, void *mlx, void *window, int x, int y, t_vector3 ray_direction, t_vector3 ray_origin)
 {
     t_vector3 plane_to_ray = subtract_vectors(ray_origin, scene.plane.position);
     double denominator;
@@ -56,7 +56,7 @@ void render_plane(t_scene scene, void *mlx, void *window, int x, int y, t_vector
     }
 }
 
-void render_sphere(t_scene scene, void *mlx, void *window, int x, int y)
+void render_sphere(t_scene_test scene, void *mlx, void *window, int x, int y)
 {
     t_vector3 camera_position;
     double ray_dir_x;
@@ -88,22 +88,16 @@ void render_sphere(t_scene scene, void *mlx, void *window, int x, int y)
     int color;
 
     camera_position = (t_vector3){0, -2, 0};
-
     ray_dir_x = (x - WIDTH / 2) / (WIDTH / 2.0);
     ray_dir_y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
     ray_dir_z = 1.0;
-
     ray_direction = normalize((t_vector3){ray_dir_x, ray_dir_y, ray_dir_z});
-
     ray_origin = camera_position;
     sphere_to_ray = subtract_vectors(ray_origin, scene.sphere.position);
-
     a = inner_product(ray_direction, ray_direction);
     b = 2 * inner_product(ray_direction, sphere_to_ray);
     c = inner_product(sphere_to_ray, sphere_to_ray) - scene.sphere.radius * scene.sphere.radius;
-
     discriminant = b * b - 4 * a * c;
-
     if (discriminant >= 0)
     {
         t = (-b - sqrt(discriminant)) / (2 * a);
@@ -154,17 +148,21 @@ void render_sphere(t_scene scene, void *mlx, void *window, int x, int y)
 }
 
 
-void	render_scene(t_scene scene, void *mlx, void *window)
+void	render_scene(t_scene_test scene, void *mlx, void *window)
 {
 	int	x;
 	int	y;
 
-	for (y = 0; y < HEIGHT; y++)
+	y = 0;
+	while (y < HEIGHT)
 	{
-		for (x = 0; x < WIDTH; x++)
+		x = 0;
+		while (x < WIDTH)
 		{
 			render_sphere(scene, mlx, window, x, y);
+			x++;
 		}
+		y++;
 	}
 }
 
@@ -172,7 +170,7 @@ int main(void)
 {
 	void	*mlx;
 	void	*window;
-	t_scene	scene;
+	t_scene_test	scene;
 
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, WIDTH, HEIGHT, "Ray Tracing");
