@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heap.c                                             :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynishimu <ynishimu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/04/11 16:08:45 by ynishimu         ###   ########.fr       */
+/*   Updated: 2023/06/03 14:25:40 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 void	render_scene(t_scene scene, void *mlx, void *window)
 {
-	int	x;
-	int	y;
-
+	int			x;
+	int			y;
 	t_vector3	camera_position;
-	
-	camera_position = (t_vector3){0, -2, 0};
 
+	camera_position = (t_vector3){0, -2, 0};
 	for (y = 0; y < HEIGHT; y++)
 	{
 		for (x = 0; x < WIDTH; x++)
@@ -129,14 +127,14 @@ int main(void)
 
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, WIDTH, HEIGHT, "Ray Tracing");
-	scene.sphere.position = (t_vector3){0, -2, -5}; // 球の位置を調整（y座標を-2に設定）
+	scene.sphere.position = (t_vector3){0, -2, -5};
 	scene.sphere.radius = 2.0;
 	scene.sphere.color = 0x00FF00;
 	scene.light = (t_vector3){5, -5, -5};
-	scene.plane.position = (t_vector3){0, 1, -2}; // 地面の位置を調整（y座標を0に設定）
+	scene.plane.position = (t_vector3){0, 1, -2};
 	scene.plane.normal = (t_vector3){0, 1, 0};
 	scene.plane.color = 0x808080;
 	render_scene(scene, mlx, window);
 	mlx_loop(mlx);
-	return 0;
+	return (0);
 }
