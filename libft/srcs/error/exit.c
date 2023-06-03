@@ -15,7 +15,7 @@
 void	ft_exit(ssize_t code, void *asnd_0, void *asnd_1, void *asnd_2)
 {
 	if (code == -1)
-		ft_putstr_fd("Error\n", STDERR_FILENO);
+		perror("FATAL");
 	free(asnd_0);
 	free(asnd_1);
 	free(asnd_2);

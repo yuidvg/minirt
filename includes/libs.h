@@ -21,4 +21,6 @@
 # include <fcntl.h>
 # include <string.h>
 
+# include "../libft/includes/libft.h"
+
 #endif

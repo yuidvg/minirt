@@ -10,24 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "../../includes/utils.h"
 
-# include "libs.h"
-# include "types.h"
+t_object	*new_object(t_object object)
+{
+	t_object	*new;
 
-//Vector
-t_vector3	add_vectors(t_vector3 v1, t_vector3 v2);
-t_vector3	scale_vector(t_vector3 v, double scalar);
-double		inner_product(t_vector3 v1, t_vector3 v2);
-t_vector3	subtract_vectors(t_vector3 v1, t_vector3 v2);
-t_vector3	normalize(t_vector3 v);
-
-//Scalar
-double		clamp(double value, double min, double max);
-
-//Heap
-void		*galloc(size_t size);
-void	gfree_exit(int exit_status, char *fmt, ...);
-
-#endif
+	new = galloc(sizeof(t_object));
+	new->type = object.type;
+	new->color = object.color;
+	new->position = object.position;
+	new->axis = object.axis;
+	new->diameter = object.diameter;
+	new->height = object.height;
+	new->next = NULL;
+	return (new);
+}

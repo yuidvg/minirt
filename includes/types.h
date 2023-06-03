@@ -16,6 +16,8 @@
 # define WIDTH 800
 # define HEIGHT 600
 
+# define WINDOW_TITLE "miniRT"
+
 typedef enum e_object_type
 {
 	SPHERE,
@@ -36,6 +38,22 @@ typedef struct s_color
 	int		green;
 	int		blue;
 }	t_color;
+
+typedef struct s_image
+{
+	void	*ptr;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}	t_image;
+
+typedef struct s_mlx
+{
+	void		*ptr;
+	void		*window;
+	t_image		image;
+}	t_mlx;
 
 typedef struct s_ambient
 {
@@ -62,15 +80,16 @@ typedef struct s_object
 	t_object_type	type;
 	t_color			color;
 	t_vector3		position;
+	t_vector3		axis;
 	double			diameter;
 	double			height;
-	t_vector3		axis;
 
 	struct s_object	*next;
 }	t_object;
 
 typedef struct s_scene
 {
+	t_mlx		mlx;
 	t_ambient	ambient;
 	t_camera	camera;
 	t_light		light;
