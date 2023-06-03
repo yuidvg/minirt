@@ -48,7 +48,9 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 //memory
 ///allocate
 void	*ft_calloc(size_t count, size_t size);
-void	*ft_malloc(size_t size, void *asnd_0, void *asnd_1, void *asnd_2);
+void	*galloc(size_t size);
+void	gfree_exit(int exit_status, char *fmt, ...);
+
 ///measure
 void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);

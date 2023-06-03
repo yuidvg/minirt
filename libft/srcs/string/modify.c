@@ -36,7 +36,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 		return (NULL);
 	i = 0;
 	len = ft_strlen(s);
-	str = (char *)malloc(len + 1);
+	str = (char *)galloc(len + 1);
 	if (!str)
 		return (NULL);
 	while (i < len)
@@ -65,7 +65,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		i++;
 	while (j > i && ft_strchr(set, s1[j]))
 		j--;
-	str = (char *)malloc(j - i + 2);
+	str = (char *)galloc(j - i + 2);
 	if (!str)
 		return (NULL);
 	k = 0;

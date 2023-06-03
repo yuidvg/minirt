@@ -76,7 +76,7 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	str_array = (char **)malloc(sizeof(char *) * (count_split(s, c) + 1));
+	str_array = (char **)galloc(sizeof(char *) * (count_split(s, c) + 1));
 	if (!str_array)
 		return (NULL);
 	i = 0;
@@ -85,7 +85,7 @@ char	**ft_split(char const *s, char c)
 	{
 		if (s[i] != c)
 		{
-			str_array[j] = (char *)malloc(delimd_len(s + i, c) + 1);
+			str_array[j] = (char *)galloc(delimd_len(s + i, c) + 1);
 			if (!str_array[j])
 				return (free_array(str_array, j));
 			insert_array(str_array[j++], s + i, delimd_len(s + i, c), &i);

@@ -10,11 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-double	clamp(double value, double min, double max)
+#include "../../includes/utils.h"
+
+int	set_color(char *str, t_color *color)
 {
-	if (value < min)
-		return (min);
-	if (value > max)
-		return (max);
-	return (value);
+	char	**rgb;
+
+	rgb = ft_split(str, ',');
+	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
+		return (1);
+	if (set_atod(rgb[0], &color->r) || set_atod(rgb[1], &color->g)
+		|| set_atod(rgb[2], &color->b))
+		return (1);
 }

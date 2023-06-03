@@ -16,34 +16,6 @@
 # define BUFFER_SIZE 32
 #endif
 
-static char	*ft_strappend(char *save, const char *const buf)
-{
-	char	*apnd;
-	size_t	i;
-	size_t	save_len;
-	size_t	buf_len;
-
-	save_len = ft_strlen(save);
-	buf_len = ft_strlen(buf);
-	apnd = (char *)malloc(sizeof(char) * (save_len + buf_len + 1));
-	if (!apnd)
-		return (NULL);
-	i = 0;
-	while (i < save_len)
-	{
-		apnd[i] = save[i];
-		i++;
-	}
-	while (i < (save_len + buf_len))
-	{
-		apnd[i] = buf[i - save_len];
-		i++;
-	}
-	apnd[i] = '\0';
-	free(save);
-	return (apnd);
-}
-
 static size_t	ft_strlen_c(const char *const str, int c)
 {
 	size_t	i;
@@ -74,7 +46,7 @@ static char	*get_line(const char *const save)
 		line_len = ft_strlen(save);
 	if (line_len == 0)
 		return (NULL);
-	line = (char *)malloc(sizeof(char) * (line_len + 1));
+	line = (char *)galloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -99,11 +71,8 @@ static char	*get_save(char *old_save)
 	while (old_save[i] != '\n' && old_save[i] != '\0')
 		i++;
 	if (old_save[i] == '\0')
-	{
-		free(old_save);
 		return (NULL);
-	}
-	new_save = (char *)malloc((ft_strlen(old_save) - i + 1));
+	new_save = (char *)galloc((ft_strlen(old_save) - i + 1));
 	if (!new_save)
 		return (NULL);
 	i++;
@@ -111,7 +80,6 @@ static char	*get_save(char *old_save)
 	while (old_save[i])
 		new_save[j++] = old_save[i++];
 	new_save[j] = '\0';
-	free(old_save);
 	return (new_save);
 }
 
@@ -129,12 +97,9 @@ char	*get_next_line(int fd)
 	{
 		read_size = read(fd, buf, BUFFER_SIZE);
 		if (read_size < 0)
-		{
-			free(saves[fd]);
 			return (NULL);
-		}
 		buf[read_size] = '\0';
-		saves[fd] = ft_strappend(saves[fd], buf);
+		saves[fd] = ft_strjoin(saves[fd], buf);
 	}
 	ret = get_line(saves[fd]);
 	saves[fd] = get_save(saves[fd]);

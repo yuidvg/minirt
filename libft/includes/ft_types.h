@@ -18,6 +18,7 @@
 # define UDECIMAL "0123456789"
 # define UHEX_L "0123456789abcdef"
 # define UHEX_U "0123456789ABCDEF"
+# define ISSPACE " \t\n\v\f\r"
 
 typedef struct s_list
 {

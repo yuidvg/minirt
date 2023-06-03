@@ -34,9 +34,9 @@ typedef struct s_vector3
 
 typedef struct s_color
 {
-	int		red;
-	int		green;
-	int		blue;
+	int		r;
+	int		g;
+	int		b;
 }	t_color;
 
 typedef struct s_image

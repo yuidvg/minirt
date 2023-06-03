@@ -10,26 +10,53 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "../../includes/utils.h"
 
-# include "libs.h"
-# include "types.h"
+int	will_overflow(long num, int next)
+{
+	if (num > INT_MAX / 10
+		|| (num == INT_MAX / 10 && (long)next > INT_MAX % 10))
+	{
+		errno = ERANGE;
+		return (1);
+	}
+	return (0);
+}
 
-//Vector
-t_vector3	add_vectors(t_vector3 v1, t_vector3 v2);
-t_vector3	scale_vector(t_vector3 v, double scalar);
-double		inner_product(t_vector3 v1, t_vector3 v2);
-t_vector3	subtract_vectors(t_vector3 v1, t_vector3 v2);
-t_vector3	normalize(t_vector3 v);
+int	will_underflow(long num, int next)
+{
+	num *= -1;
+	next *= -1;
+	if (num < INT_MIN / 10
+		|| (num == INT_MIN / 10 && next < INT_MIN % 10))
+	{
+		errno = ERANGE;
+		return (1);
+	}
+	return (0);
+}
 
-//Scalar
-double		clamp(double value, double min, double max);
-int			set_atod(char *str, double *num);
+int	set_atoi(char *str, int *num)
+{
+	size_t	i;
+	int		sign;
 
-//Calculation
-t_vector3	calculate_ray_direction(int x, int y);
-double		calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin, 
-				t_vector3 object_position, double object_diameter);
-
-#endif
+	i = 0;
+	sign = 1;
+	*num = 0;
+	while (ft_strchr(ISSPACE, str[i]))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i++] == '-')
+			sign = -1;
+	}
+	while ('0' <= str[i] && str[i] <= '9')
+	{
+		if (sign == 1 && will_overflow(num, str[i] - '0'))
+			return ((int)LONG_MAX);
+		if (sign == -1 && will_underflow(num, str[i] - '0'))
+			return ((int)LONG_MIN);
+		*num = (*num * 10) + (str[i++] - '0');
+	}
+}

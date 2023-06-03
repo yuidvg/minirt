@@ -75,7 +75,7 @@ char	*ft_itoa(int n)
 		return (ft_strdup("0"));
 	i = 0;
 	sign = 1;
-	str = (char *)malloc(num_len(n, &sign) + 1);
+	str = (char *)galloc(num_len(n, &sign) + 1);
 	if (!str)
 		return (NULL);
 	n = n * sign;

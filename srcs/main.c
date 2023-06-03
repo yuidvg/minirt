@@ -12,7 +12,7 @@
 
 #include "../includes/main.h"
 
-void render_plane(t_scene *scene, int x, int y, t_vector3 ray_direction, t_vector3 ray_origin)
+void render_plane(t_scene *scene, int x, int y)
 {
 	t_vector3 plane_to_ray = subtract_vectors(ray_origin, scene->objects->next.position);
 	double denominator;
@@ -50,53 +50,35 @@ void render_plane(t_scene *scene, int x, int y, t_vector3 ray_direction, t_vecto
 					return;
 				}
 				color = scene.plane.color;
-				mlx_pixel_put(mlx, window, x, y, color);
+				mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, color);
 			}
 		}
 	}
 }
 
-void render_sphere(, int x, int y)
+void render_sphere(t_scene *scene, int x, int y)
 {
-	double ray_dir_x;
-	double ray_dir_y;
-	double ray_dir_z;
-	t_vector3 ray_direction;
-	t_vector3 ray_origin;
-	t_vector3 sphere_to_ray;
-	double a;
-	double b;
-	double c;
-	double discriminant;
-	double t;
-	t_vector3 intersection_point;
-	t_vector3 normal;
-	t_vector3 light_direction;
-	double diffuse_intensity;
-	t_vector3 shadow_ray_origin;
-	t_vector3 shadow_ray_direction;
-	double shadow_t;
-	double ambient;
-	double diffuse;
-	int r;
-	int g;
-	int blue;
-	int shade_r;
-	int shade_g;
-	int shade_b;
-	int color;
+	t_vector3	ray_direction;
+	t_vector3	ray_origin;
+	t_vector3	sphere_to_ray;
+	double		discriminant;
+	double		t;
+	t_vector3	intersection_point;
+	t_vector3	normal;
+	t_vector3	light_direction;
+	double		diffuse_intensity;
+	t_vector3	shadow_ray_origin;
+	t_vector3	shadow_ray_direction;
+	double		shadow_t;
+	double		ambient;
+	double		diffuse;
+	t_color		color;
+	t_color		shade_color;
+	int 		rgb_color;
 
-	scene->camera.position = (t_vector3){0, -2, 0};
-	ray_dir_x = (x - WIDTH / 2) / (WIDTH / 2.0);
-	ray_dir_y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
-	ray_dir_z = 1.0;
-	ray_direction = normalize((t_vector3){ray_dir_x, ray_dir_y, ray_dir_z});
-	ray_origin = (scene->camera).position;
-	sphere_to_ray = subtract_vectors(ray_origin, (scene->objects)->position);
-	a = inner_product(ray_direction, ray_direction);
-	b = 2 * inner_product(ray_direction, sphere_to_ray);
-	c = inner_product(sphere_to_ray, sphere_to_ray) - ((scene->objects->diameter * scene->objects->diameter) / 4.0);
-	discriminant = b * b - 4 * a * c;
+	ray_direction = calculate_ray_direction(x, y);
+	ray_origin = scene->camera.position;
+	discriminant = calculate_discriminant(ray_direction, ray_origin, scene->objects->position, scene->objects->diameter);
 	if (discriminant >= 0)
 	{
 		t = (-b - sqrt(discriminant)) / (2 * a);
@@ -117,17 +99,14 @@ void render_sphere(, int x, int y)
 		}
 		ambient = 0.1;
 		diffuse = diffuse_intensity;
-		r = (scene->objects)->color.red >> 16 & 0xFF;
-		g = (scene->objects)->color.green >> 8 & 0xFF;
-		blue = (scene->objects)->color.blue & 0xFF;
-		shade_r = (int)(ambient * r + diffuse * r);
-		shade_g = (int)(ambient * g + diffuse * g);
-		shade_b = (int)(ambient * blue + diffuse * blue);
-		shade_r = (shade_r > 255) ? 255 : shade_r;
-		shade_g = (shade_g > 255) ? 255 : shade_g;
-		shade_b = (shade_b > 255) ? 255 : shade_b;
-		color = (shade_r << 16) | (shade_g << 8) | shade_b;
-		mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, color);
+		color.r = (scene->objects)->color.r >> 16 & 0xFF;
+		color.g = (scene->objects)->color.g >> 8 & 0xFF;
+		color.b = (scene->objects)->color.b & 0xFF;
+		shade_color.r = clamp((int)(ambient * color.r + diffuse * color.r), 0, 255);
+		shade_color.g = clamp((int)(ambient * color.r + diffuse * color.g), 0, 255);
+		shade_color.b = clamp((int)(ambient * color.b + diffuse * color.b), 0, 255);
+		rgb_color = (shade_color.r << 16) | (shade_color.g << 8) | shade_color.b;
+		mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, rgb_color);
 	}
 }
 

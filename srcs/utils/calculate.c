@@ -10,26 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include "../../includes/utils.h"
 
-# include "libs.h"
-# include "types.h"
+t_vector3 calculate_ray_direction(int x, int y) 
+{
+	t_vector3	ray_direction;
 
-//Vector
-t_vector3	add_vectors(t_vector3 v1, t_vector3 v2);
-t_vector3	scale_vector(t_vector3 v, double scalar);
-double		inner_product(t_vector3 v1, t_vector3 v2);
-t_vector3	subtract_vectors(t_vector3 v1, t_vector3 v2);
-t_vector3	normalize(t_vector3 v);
+	double ray_dir_x = (x - WIDTH / 2) / (WIDTH / 2.0);
+	double ray_dir_y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
+	double ray_dir_z = 1.0;
+	ray_direction = normalize((t_vector3){ray_dir_x, ray_dir_y, ray_dir_z});
+	return	(ray_direction);
+}
 
-//Scalar
-double		clamp(double value, double min, double max);
-int			set_atod(char *str, double *num);
-
-//Calculation
-t_vector3	calculate_ray_direction(int x, int y);
-double		calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin, 
-				t_vector3 object_position, double object_diameter);
-
-#endif
+double calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin, t_vector3 object_position, double object_diameter)
+{
+	t_vector3	sphere_to_ray;
+	double		a; 
+	double		b;  
+	double		c;
+	double		discriminant;
+	
+	sphere_to_ray = subtract_vectors(ray_origin, object_position);
+	a =	inner_product(ray_direction, ray_direction);
+	b = 2 * inner_product(ray_direction, sphere_to_ray);
+	c = inner_product(sphere_to_ray, sphere_to_ray) - ((object_diameter * object_diameter) / 4.0);
+	discriminant = b * b - 4 * a * c;
+	return discriminant;
+}
