@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: ${USER} <${USER}@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/03 15:32:47 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/04 23:33:41 by ${USER}          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void render_plane(t_scene *scene, int x, int y)
 {
-	t_vector3 plane_to_ray = subtract_vectors(ray_origin, scene->objects->next.position);
-	double denominator;
-	double t;
+	t_vector3	plane_to_ray = subtract_vectors(ray_origin, scene->objects->next.position);
+	double		denominator;
+	double		t;
 	t_vector3 intersection_point;
 	t_vector3 plane_normal;
 	double intersection_dot_normal;
@@ -58,58 +58,37 @@ void render_plane(t_scene *scene, int x, int y)
 
 void render_sphere(t_scene *scene, int x, int y)
 {
-	t_vector3	ray_direction;
-	t_vector3	ray_origin;
-	t_vector3	sphere_to_ray;
-	double		discriminant;
-	double		t;
-	t_vector3	intersection_point;
-	t_vector3	normal;
-	t_vector3	light_direction;
-	double		diffuse_intensity;
-	t_vector3	shadow_ray_origin;
-	t_vector3	shadow_ray_direction;
-	double		shadow_t;
-	double		ambient;
-	double		diffuse;
-	t_color		color;
-	t_color		shade_color;
-	int 		rgb_color;
+	t_vector3 ray_direction;
+	t_vector3 ray_origin;
+	t_vector3 sphere_to_ray;
+	double discriminant;
+	double t;
+	t_vector3 intersection_point;
+	t_vector3 normal;
+	t_vector3 light_direction;
+	double diffuse_intensity;
+	t_vector3 shadow_ray_origin;
+	t_vector3 shadow_ray_direction;
+	double diffuse;
 
-	ray_direction = calculate_ray_direction(x, y);
+	ray_direction = calculate_ray_direction(x, y);//cameraからrayを飛ばす方向(正規化されている)
 	ray_origin = scene->camera.position;
-	discriminant = calculate_discriminant(ray_direction, ray_origin, scene->objects->position, scene->objects->diameter);
-	if (discriminant >= 0)
+	discriminant = calculate_discriminant(ray_direction, ray_origin, scene->objects->position, scene->objects->diameter);//判定式（球とレイの交点があるかどうか）
+	if (discriminant >= 0)//交点がある場合
 	{
-		t = (-b - sqrt(discriminant)) / (2 * a);
+		t = (-b - sqrt(discriminant)) / (2 * a);//交点までの距離
 		intersection_point = (t_vector3){
 			ray_origin.x + ray_direction.x * t,
 			ray_origin.y + ray_direction.y * t,
-			ray_origin.z + ray_direction.z * t};
-		normal = normalize(subtract_vectors(intersection_point, scene->objects->position));
-		light_direction = normalize(subtract_vectors((scene->light).position, intersection_point));
-		diffuse_intensity = inner_product(normal, light_direction);
-		diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
-		shadow_ray_origin = add_vectors(intersection_point, scale_vector(normal, 0.001));
-		shadow_ray_direction = subtract_vectors(scene->light.position, shadow_ray_origin);
-		if (shadow_t > 0 && shadow_t < 1)
-		{
-			mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, 0x000000);
-			return;
-		}
-		ambient = 0.1;
+			ray_origin.z + ray_direction.z * t};//交点の座標
+		normal = normalize(subtract_vectors(intersection_point, scene->objects->position));//面法線の方向ベクトル
+		light_direction = normalize(subtract_vectors((scene->light).position, intersection_point));//交点から光源への方向ベクトル
+		diffuse_intensity = inner_product(normal, light_direction);//内積が１に近いほど光が強い
+		diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);//0.0~1.0の間に収める
 		diffuse = diffuse_intensity;
-		color.r = (scene->objects)->color.r >> 16 & 0xFF;
-		color.g = (scene->objects)->color.g >> 8 & 0xFF;
-		color.b = (scene->objects)->color.b & 0xFF;
-		shade_color.r = clamp((int)(ambient * color.r + diffuse * color.r), 0, 255);
-		shade_color.g = clamp((int)(ambient * color.r + diffuse * color.g), 0, 255);
-		shade_color.b = clamp((int)(ambient * color.b + diffuse * color.b), 0, 255);
-		rgb_color = (shade_color.r << 16) | (shade_color.g << 8) | shade_color.b;
-		mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, rgb_color);
+		mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, calculate_shade_color(scene, diffuse));
 	}
 }
-
 
 void	render_scene(t_scene *scene)
 {
@@ -130,12 +109,11 @@ void	render_scene(t_scene *scene)
 	}
 }
 
-
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	void		*mlx;
-	void		*window;
-	t_scene		scene;
+	void	*mlx;
+	void	*window;
+	t_scene	scene;
 
 	if (argc != 2)
 		gfree_exit(0, "Error\nUsage: %s [*.rt]\n", argv[0]);

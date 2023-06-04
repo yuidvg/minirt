@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heap.c                                             :+:      :+:    :+:   */
+/*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynishimu <ynishimu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ${USER} <${USER}@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/04/11 16:08:45 by ynishimu         ###   ########.fr       */
+/*   Updated: 2023/06/04 22:58:26 by ${USER}          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_vector3	subtract_vectors(t_vector3 v1, t_vector3 v2)
 	return (result);
 }
 
-t_vector3	normalize(t_vector3 v)
+t_vector3	normalize(t_vector3 v)//ベクトルの正規化
 {
 	double		length;
 	t_vector3	result;
