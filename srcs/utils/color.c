@@ -12,17 +12,17 @@
 
 #include "../../includes/utils.h"
 
-int	set_color(char *str, t_color *color)
-{
-	char	**rgb;
+// int	set_color(char *str, t_color *color)
+// {
+// 	char	**rgb;
 
-	rgb = ft_split(str, ',');
-	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
-		return (1);
-	if (set_atod(rgb[0], &color->r) || set_atod(rgb[1], &color->g)
-		|| set_atod(rgb[2], &color->b))
-		return (1);
-}
+// 	rgb = ft_split(str, ',');
+// 	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
+// 		return (1);
+// 	if (set_atod(rgb[0], &color->r) || set_atod(rgb[1], &color->g)
+// 		|| set_atod(rgb[2], &color->b))
+// 		return (1);
+// }
 
 t_color	extract_color_components(t_color source_color)
 {

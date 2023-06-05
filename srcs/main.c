@@ -62,7 +62,7 @@ double	process_intersection(t_scene *scene, t_vector3 ray_direction, double t)
 	t_vector3	normal;
 	t_vector3	light_direction;
 	double		diffuse_intensity;
-	double		diffuse;
+	double		direct_light_intensity;
 
 	intersection_point = (t_vector3){
 		scene->camera.position.x + ray_direction.x * t,
@@ -70,12 +70,14 @@ double	process_intersection(t_scene *scene, t_vector3 ray_direction, double t)
 		scene->camera.position.z + ray_direction.z * t};
 	normal = normalize(subtract_vectors(intersection_point,
 				scene->objects->position));
-	light_direction = normalize(subtract_vectors((scene->light).position,
-				intersection_point));
 	diffuse_intensity = inner_product(normal, light_direction);
 	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
-	diffuse = diffuse_intensity;
-	return (diffuse);
+	light_direction = normalize(subtract_vectors((scene->light).position,
+				intersection_point));
+	direct_light_intensity = inner_product(normal, light_direction);
+	direct_light_intensity = clamp(diffuse_intensity, 0.0, 1.0);
+
+	return (diffuse_intensity + direct_light_intensity);
 }
 
 void	set_objects_color(t_scene *scene, int x, int y, double diffuse)
@@ -111,38 +113,6 @@ void	render_sphere(t_scene *scene, int x, int y)
 	}
 }
 
-
-
-// void render_sphere(t_scene *scene, int x, int y)
-// {
-// 	t_vector3	ray_direction;
-// 	t_vector3	ray_origin;
-// 	double		discriminant;
-// 	double		t;
-// 	double		a;
-// 	double		b;
-// 	t_vector3 intersection_point;
-// 	t_vector3 normal;
-// 	t_vector3 light_direction;
-// 	double diffuse_intensity;
-// 	double diffuse;
-
-// 	ray_direction = calculate_ray_direction(x, y);
-// 	ray_origin = scene->camera.position;
-// 	discriminant = calculate_discriminant(ray_direction, ray_origin, scene->objects->position, scene->objects->diameter);
-// 	if (discriminant >= 0)
-// 	{
-// 		t = (-b - sqrt(discriminant)) / (2 * a);
-// 		intersection_point = (t_vector3){ray_origin.x + ray_direction.x * t, ray_origin.y + ray_direction.y * t, ray_origin.z + ray_direction.z * t};
-// 		normal = normalize(subtract_vectors(intersection_point, scene->objects->position));
-// 		light_direction = normalize(subtract_vectors((scene->light).position, intersection_point));
-// 		diffuse_intensity = inner_product(normal, light_direction);
-// 		diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
-// 		diffuse = diffuse_intensity;
-// 		mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, calculate_shade_color(scene, diffuse));
-// 	}
-// }
-
 void	render_scene(t_scene *scene)
 {
 	int			x;
@@ -161,21 +131,19 @@ void	render_scene(t_scene *scene)
 	}
 }
 
-int	main(int argc, char **argv)
+int	main(void)
 {
 	t_scene	scene;
 
-	if (argc != 2)
-		gfree_exit(0, "Error\nUsage: %s [*.rt]\n", argv[0]);
 	init_mlx(&scene);
-	init_scene(argv[1], &scene);
-	scene.objects->position = (t_vector3){0, -2, -5};
-	scene.light.position = (t_vector3){5, -5, -5};
+	scene.objects = (t_object *)malloc(sizeof(t_object));
 	scene.objects->type = SPHERE;
-	scene.objects->diameter = 2.0;
-	scene.objects->color.r = 0x00FF00;
-	scene.objects->color.g = 0x00FF00;
-	scene.objects->color.b = 0x00FF00;
+	scene.objects->diameter = 4.0;
+	scene.objects->color.r = 50;
+	scene.objects->color.g = 50;
+	scene.objects->color.b = 50;
+	scene.light.position = (t_vector3){5, -5, -5};
+	scene.objects->position = (t_vector3){0, 0, -5};
 	render_scene(&scene);
 	mlx_loop(scene.mlx.ptr);
 	gfree_exit(0, NULL);
