@@ -25,5 +25,11 @@ t_vector3	normalize(t_vector3 v);
 
 //Scalar
 double		clamp(double value, double min, double max);
+int			set_atod(char *str, double *num);
+
+//Calculation
+t_vector3	calculate_ray_direction(int x, int y);
+double		calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin, 
+				t_vector3 object_position, double object_diameter);
 
 #endif

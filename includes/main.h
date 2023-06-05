@@ -17,4 +17,7 @@
 # include "utils.h"
 # include "types.h"
 
+void	init_mlx(t_scene *scene);
+void	init_scene(char *filename, t_scene *scene);
+
 #endif

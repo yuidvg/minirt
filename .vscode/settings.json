@@ -1,9 +1,17 @@
 {
-    "files.associations": {
-        "minirt.h": "c",
-        "utils.h": "c",
-        "main.h": "c",
-        "types.h": "c",
-        "libs.h": "c"
-    }
+	"files.associations": {
+		"minirt.h": "c",
+		"utils.h": "c",
+		"main.h": "c",
+		"types.h": "c",
+		"libs.h": "c",
+		"libft.h": "c",
+		"ft_libs.h": "c",
+		"cstdio": "c",
+		"ft_types.h": "c",
+		"stdlib.h": "c",
+		"unistd.h": "c",
+		"math.h": "c",
+		"fcntl.h": "c"
+	}
 }

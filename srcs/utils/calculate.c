@@ -10,17 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBS_H
-# define LIBS_H
+#include "../../includes/utils.h"
 
-# include <mlx.h>
-# include <math.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <string.h>
+t_vector3 calculate_ray_direction(int x, int y) 
+{
+	t_vector3	ray_direction;
 
-# include "../libft/includes/libft.h"
+	double ray_dir_x = (x - WIDTH / 2) / (WIDTH / 2.0);
+	double ray_dir_y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
+	double ray_dir_z = 1.0;
+	ray_direction = normalize((t_vector3){ray_dir_x, ray_dir_y, ray_dir_z});
+	return	(ray_direction);
+}
 
-#endif
+double calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin, t_vector3 object_position, double object_diameter)
+{
+	t_vector3	sphere_to_ray;
+	double		a; 
+	double		b;  
+	double		c;
+	double		discriminant;
+	
+	sphere_to_ray = subtract_vectors(ray_origin, object_position);
+	a =	inner_product(ray_direction, ray_direction);
+	b = 2 * inner_product(ray_direction, sphere_to_ray);
+	c = inner_product(sphere_to_ray, sphere_to_ray) - ((object_diameter * object_diameter) / 4.0);
+	discriminant = b * b - 4 * a * c;
+	return discriminant;
+}

@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_types.h                                         :+:      :+:    :+:   */
+/*   heap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ynishimu <ynishimu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/12 12:37:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/04/12 20:01:25 by ynishimu         ###   ########.fr       */
+/*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
+/*   Updated: 2023/04/11 16:08:45 by ynishimu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_TYPES_H
-# define FT_TYPES_H
+#include "../../includes/utils.h"
 
-# include "ft_libs.h"
-
-# define UDECIMAL "0123456789"
-# define UHEX_L "0123456789abcdef"
-# define UHEX_U "0123456789ABCDEF"
-# define ISSPACE " \t\n\v\f\r"
-
-typedef struct s_list
+t_object	*new_object(t_object object)
 {
-	void			*content;
-	struct s_list	*next;
-}	t_list;
+	t_object	*new;
 
-#endif
+	new = galloc(sizeof(t_object));
+	new->type = object.type;
+	new->color = object.color;
+	new->position = object.position;
+	new->axis = object.axis;
+	new->diameter = object.diameter;
+	new->height = object.height;
+	new->next = NULL;
+	return (new);
+}

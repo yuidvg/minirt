@@ -20,5 +20,6 @@
 # include <errno.h>
 # include <stdbool.h>
 # include <stdarg.h>
+# include <stdio.h>
 
 #endif

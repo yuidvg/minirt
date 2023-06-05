@@ -16,7 +16,7 @@ MLXINCLUDE = /usr/local/include/
 NAME = minirt
 SRCSDIR = srcs/
 SRCS = main.c\
-		utils/scalar.c utils/vector.c
+		utils/double.c utils/vector.c
 OBJSDIR = objs/
 OBJS = $(SRCS:%.c=$(OBJSDIR)%.o)
 

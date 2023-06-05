@@ -18,7 +18,7 @@ char	*ft_strdup(const char *s1)
 	char	*dst;
 
 	dstsize = ft_strlen(s1)+ 1;
-	dst = malloc(dstsize);
+	dst = galloc(dstsize);
 	if (!dst)
 		return (NULL);
 	if (ft_strlcpy(dst, s1, dstsize) >= dstsize)
@@ -72,7 +72,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	str = (char *)galloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!str)
 		return (NULL);
 	i = 0;

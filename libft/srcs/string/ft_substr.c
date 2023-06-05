@@ -30,7 +30,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	if (ft_strlen(s) < start)
 		return (ft_strdup(""));
-	substr = (char *)malloc(ft_min(ft_strlen(s + start), len) + 1);
+	substr = (char *)galloc(ft_min(ft_strlen(s + start), len) + 1);
 	if (!substr)
 		return (NULL);
 	while (s[start] != '\0' && i < len)
