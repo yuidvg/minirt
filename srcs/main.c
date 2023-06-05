@@ -92,8 +92,9 @@ void render_sphere(t_scene *scene, int x, int y)
 
 void	render_scene(t_scene *scene)
 {
-	int	x;
-	int	y;
+	int			x;
+	int			y;
+	t_vector3	camera_position;
 
 	y = 0;
 	while (y < HEIGHT)
