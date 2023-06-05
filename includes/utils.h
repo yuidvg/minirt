@@ -34,7 +34,7 @@ double		calculate_discriminant(t_vector3 ray_direction,
 				double object_diameter);
 
 // Color
-int			set_color(char *str, t_color *color);
+void		set_objects_color(t_scene *scene, int x, int y, double diffuse);
 t_color		extract_color_components(t_color source_color);
 int			calculate_shade_color(t_scene *scene, double diffuse);
 
