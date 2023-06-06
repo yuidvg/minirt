@@ -47,7 +47,7 @@ t_vector3	subtract_vectors(t_vector3 v1, t_vector3 v2)
 	return (result);
 }
 
-t_vector3	normalize(t_vector3 v)//ベクトルの正規化
+t_vector3	normalize(t_vector3 v)
 {
 	double		length;
 	t_vector3	result;

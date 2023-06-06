@@ -35,7 +35,13 @@ double		calculate_discriminant(t_vector3 ray_direction,
 
 // Color
 void		set_objects_color(t_scene *scene, int x, int y, double diffuse);
+
+// Sphere
 t_color		extract_color_components(t_color source_color);
 int			calculate_shade_color(t_scene *scene, double diffuse);
+double		process_intersection(t_scene *scene,
+				t_vector3 ray_direction, double t);
+void		set_sphere_color(t_scene *scene, int x, int y, double diffuse);
+void		render_sphere(t_scene *scene, int x, int y);
 
 #endif

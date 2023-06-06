@@ -43,3 +43,4 @@ double	calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin,
 	discriminant = b * b - 4 * a * c;
 	return (discriminant);
 }
+

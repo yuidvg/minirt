@@ -20,6 +20,7 @@ SRCS = main.c mlx.c\
 		utils/calculate.c utils/color.c\
 		utils/objects.c\
 		utils/vector.c\
+		utils/sphere.c
 
 OBJSDIR = objs/
 OBJS = $(SRCS:%.c=$(OBJSDIR)%.o)
