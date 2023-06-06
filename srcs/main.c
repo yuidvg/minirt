@@ -136,7 +136,9 @@ int main(int argc, char **argv)
 	void		*mlx;
 	void		*window;
 	t_scene		scene;
+	t_object object;
 
+	object.get_intersection((t_){ray, object });
 	if (argc != 2)
 		gfree_exit(0, "Error\nUsage: %s [*.rt]\n", argv[0]);
 	init_mlx(&scene);

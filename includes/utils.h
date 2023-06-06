@@ -29,7 +29,10 @@ int			set_atod(char *str, double *num);
 
 //Calculation
 t_vector3	calculate_ray_direction(int x, int y);
-double		calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin, 
-				t_vector3 object_position, double object_diameter);
+double		calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin,
+								t_vector3 object_position, double object_diameter);
+
+//Color
+int	set_color(char *str, t_color *color)
 
 #endif
