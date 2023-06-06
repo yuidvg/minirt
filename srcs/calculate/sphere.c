@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ${USER} <${USER}@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/04 23:33:41 by ${USER}          ###   ########.fr       */
+/*   Updated: 2023/06/04 23:30:20 by ${USER}          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/main.h"
+#include "../../includes/utils.h"
 
-t_color	plane_extract_color_components(t_color source_color)
+t_color	extract_color_components(t_color source_color)
 {
 	t_color	extracted_color;
 
@@ -22,7 +22,8 @@ t_color	plane_extract_color_components(t_color source_color)
 	return (extracted_color);
 }
 
-int	plane_calculate_shade_color(t_scene *scene, double diffuse)
+//return rgb color
+int	calculate_shade_color(t_scene *scene, double diffuse)
 {
 	t_color	extracted_color;
 	t_color	shade_color;
@@ -30,7 +31,7 @@ int	plane_calculate_shade_color(t_scene *scene, double diffuse)
 	double	direct_intensity;
 	int		color;
 
-	extracted_color = plane_extract_color_components(scene->objects->next->color);
+	extracted_color = extract_color_components(scene->objects->color);
 	direct_intensity = diffuse * scene->light.blightness;
 	direct_color.r = (int)(direct_intensity * extracted_color.r);
 	direct_color.g = (int)(direct_intensity * extracted_color.g);
@@ -45,97 +46,54 @@ int	plane_calculate_shade_color(t_scene *scene, double diffuse)
 	return (color);
 }
 
-double	plane_process_intersection(t_scene *scene,
-		t_vector3 ray_direction, double t)
+double	process_intersection(t_scene *scene, t_vector3 ray_direction, double t)
 {
 	t_vector3	intersection_point;
-	t_vector3	plane_normal;
+	t_vector3	normal_vector;
 	t_vector3	light_vector;
 	double		diffuse_intensity;
 
 	intersection_point = (t_vector3){
 		scene->camera.position.x + ray_direction.x * t,
-		scene->camera.position.x + ray_direction.y * t,
-		scene->camera.position.x + ray_direction.z * t};
-	plane_normal = normalize(subtract_vectors(intersection_point,
+		scene->camera.position.y + ray_direction.y * t,
+		scene->camera.position.z + ray_direction.z * t};
+	normal_vector = normalize(subtract_vectors(intersection_point,
 				scene->objects->position));
 	light_vector = normalize(subtract_vectors(scene->light.position,
 				intersection_point));
-	diffuse_intensity = inner_product(plane_normal, light_vector);
+	diffuse_intensity = inner_product(normal_vector, light_vector);
 	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
 	return (diffuse_intensity);
 }
 
-void	set_plane_color(t_scene *scene, int x, int y, double diffuse)
+void	set_sphere_color(t_scene *scene, int x, int y, double diffuse)
 {
 	int	color;
 
-	color = plane_calculate_shade_color(scene, diffuse);
+	color = calculate_shade_color(scene, diffuse);
 	mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, color);
 }
 
-void	render_plane(t_scene *scene, int x, int y)
+void	render_sphere(t_scene *scene, int x, int y)
 {
 	t_vector3	ray_direction;
-	t_vector3	plane_normal;
-	double		denominator;
+	double		discriminant;
 	double		t;
-	double		diffuse;
+	double		a;
+	double		b;
 
 	ray_direction = calculate_ray_direction(x, y);
-	plane_normal = normalize(scene->objects->next->position);
-	denominator = inner_product(ray_direction, plane_normal);
-	if (denominator != 0)
+	discriminant = calculate_discriminant(ray_direction,
+			scene->camera.position, scene->objects->position,
+			scene->objects->diameter);
+	a = inner_product(ray_direction, ray_direction);
+	b = 2 * inner_product(ray_direction,
+			subtract_vectors(scene->camera.position,
+				(scene->objects)->position));
+	if (discriminant >= 0)
 	{
-		t = inner_product(ray_direction, plane_normal) / denominator;
-		if (t >= 0)
-		{
-			diffuse = plane_process_intersection(scene, ray_direction, t);
-			set_plane_color(scene, x, y, diffuse);
-		}
+		t = (-b - sqrt(discriminant)) / (2 * a);
+		set_sphere_color(scene, x, y,
+			process_intersection(scene, ray_direction, t));
 	}
-}
-
-void	render_scene(t_scene *scene)
-{
-	int			x;
-	int			y;
-
-	y = 0;
-	while (y < HEIGHT)
-	{
-		x = 0;
-		while (x < WIDTH)
-		{
-			render_plane(scene, x, y);
-			render_sphere(scene, x, y);
-			x++;
-		}
-		y++;
-	}
-}
-
-int	main(void)
-{
-
-	t_scene	scene;
-
-	init_mlx(&scene);
-	scene.objects = (t_object *)malloc(sizeof(t_object));
-	scene.objects->next = (t_object *)malloc(sizeof(t_object));
-	scene.camera.position = (t_vector3){0, 0, -2};
-	scene.objects->diameter = 4.0;
-	scene.objects->color.r = 255;
-	scene.objects->color.g = 255;
-	scene.objects->color.b = 255;
-	scene.objects->position = (t_vector3){0, 0, 5};
-	scene.objects->next->position = (t_vector3){0, -3, 5};
-	scene.objects->next->color.r = 0;
-	scene.objects->next->color.g = 0;
-	scene.objects->next->color.b = 0;
-	scene.ambient.ratio = 0.3;
-	scene.light.position = (t_vector3){-3, 5, -5};
-	render_scene(&scene);
-	mlx_loop(scene.mlx.ptr);
-	gfree_exit(0, NULL);
 }
