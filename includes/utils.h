@@ -44,4 +44,5 @@ double		process_intersection(t_scene *scene,
 void		set_sphere_color(t_scene *scene, int x, int y, double diffuse);
 void		render_sphere(t_scene *scene, int x, int y);
 
+
 #endif
