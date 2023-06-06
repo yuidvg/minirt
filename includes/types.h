@@ -41,8 +41,8 @@ typedef struct s_color
 
 typedef struct t_ray
 {
-	t_vector3	origin;
-	t_vector3	direction;
+	t_vector3	position;
+	t_vector3	orientation;
 }	t_ray;
 
 typedef struct s_image
@@ -81,24 +81,24 @@ typedef struct s_light
 	t_color		color;
 }	t_light;
 
+struct	s_;
+
+typedef struct s_object
+{
+	t_color				color;
+	t_vector3			position;
+	t_vector3			orientation;
+	double				diameter;
+	double				height;
+	t_ray				(*get_intersection)(struct s_ *);
+	struct s_object		*next;
+}	t_object;
+
 typedef struct s_
 {
 	t_object	*object;
 	t_ray		*ray;
 }	t_;
-
-typedef struct s_object	t_object;
-
-struct s_object
-{
-	t_color				color;
-	t_vector3			position;
-	t_vector3			axis;
-	double				diameter;
-	double				height;
-	t_ray				(*get_intersection)(t_ *);
-	struct s_object		*next;
-};
 
 typedef struct s_scene
 {

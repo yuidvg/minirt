@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/utils.h"
+#include "../../includes/calculate.h"
 
 t_vector3	add_vectors(t_vector3 v1, t_vector3 v2)
 {

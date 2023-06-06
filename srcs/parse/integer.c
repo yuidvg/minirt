@@ -10,31 +10,54 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/utils.h"
+#include "../../includes/calculate.h"
 
-t_vector3 calculate_ray_direction(int x, int y) 
+static int	will_overflow(int num, int next)
 {
-	t_vector3	ray_direction;
-
-	double ray_dir_x = (x - WIDTH / 2) / (WIDTH / 2.0);
-	double ray_dir_y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
-	double ray_dir_z = 1.0;
-	ray_direction = normalize((t_vector3){ray_dir_x, ray_dir_y, ray_dir_z});
-	return	(ray_direction);
+	if (num > INT_MAX / 10
+		|| (num == INT_MAX / 10 && next > INT_MAX % 10))
+	{
+		errno = ERANGE;
+		return (1);
+	}
+	return (0);
 }
 
-double calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin, t_vector3 object_position, double object_diameter)
+static int	will_underflow(int num, int next)
 {
-	t_vector3	sphere_to_ray;
-	double		a; 
-	double		b;  
-	double		c;
-	double		discriminant;
-	
-	sphere_to_ray = subtract_vectors(ray_origin, object_position);
-	a =	inner_product(ray_direction, ray_direction);
-	b = 2 * inner_product(ray_direction, sphere_to_ray);
-	c = inner_product(sphere_to_ray, sphere_to_ray) - ((object_diameter * object_diameter) / 4.0);
-	discriminant = b * b - 4 * a * c;
-	return discriminant;
+	num *= -1;
+	next *= -1;
+	if (num < INT_MIN / 10
+		|| (num == INT_MIN / 10 && next < INT_MIN % 10))
+	{
+		errno = ERANGE;
+		return (1);
+	}
+	return (0);
+}
+
+int	set_atoi(char *str, int *num)
+{
+	size_t	i;
+	int		sign;
+
+	i = 0;
+	sign = 1;
+	*num = 0;
+	while (ft_strchr(ISSPACE, str[i]))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i++] == '-')
+			sign = -1;
+	}
+	while ('0' <= str[i] && str[i] <= '9')
+	{
+		if (sign == 1 && will_overflow(*num, str[i] - '0'))
+			return (1);
+		if (sign == -1 && will_underflow(*num, str[i] - '0'))
+			return (1);
+		*num = (*num * 10) + (str[i++] - '0');
+	}
+	return (0);
 }

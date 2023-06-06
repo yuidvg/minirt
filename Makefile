@@ -44,6 +44,4 @@ re: fclean all
 debug: $(OBJS)
 	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(OBJS) -o $(NAME)
 
-
-
 .PHONY: fclean all re clean

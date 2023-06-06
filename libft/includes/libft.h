@@ -63,8 +63,6 @@ void	*ft_memmove(void *dst, const void *src, size_t len);
 //string
 char	*get_next_line(int fd);
 int		ft_atoi(const char *str);
-int		will_overflow(long num, int next);
-int		will_underflow(long num, int next);
 char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
 size_t	count_split(char const *s, char c);
