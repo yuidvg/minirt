@@ -40,34 +40,31 @@ int	plane_calculate_shade_color(t_scene *scene, double diffuse)
 	return (color);
 }
 
-// double	plane_process_intersection(t_scene *scene,
-// 		t_vector3 ray_direction, double denominator)
-// {
-// 	t_vector3	intersection_point;
-// 	t_vector3	plane_normal;
-// 	t_vector3	light_vector;
-// 	double		diffuse_intensity;
+double	plane_process_intersection(t_scene *scene,
+		t_vector3 ray_direction, double denominator)
+{
+	t_vector3	intersection_point;
+	t_vector3	plane_normal;
+	t_vector3	light_vector;
+	double		diffuse_intensity;
 
-// 	intersection_point = (t_vector3){
-// 		scene->camera.position.x + ray_direction.x * denominator,
-// 		scene->camera.position.y + ray_direction.y * denominator,
-// 		scene->camera.position.z + ray_direction.z * denominator};
-// 	plane_normal = normalize(scene->objects->next->position);
-// 	light_vector = normalize(subtract_vectors(scene->light.position,
-// 				intersection_point));
-// 	diffuse_intensity = inner_product(plane_normal, light_vector);
-// 	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
-// 	if (diffuse_intensity > 0.0)
-// 		printf("deff = %f\n", diffuse_intensity);
-// 	return (diffuse_intensity);
-// }
+	intersection_point = (t_vector3){
+		scene->camera.position.x + ray_direction.x * denominator,
+		scene->camera.position.y + ray_direction.y * denominator,
+		scene->camera.position.z + ray_direction.z * denominator};
+	plane_normal = normalize(scene->objects->next->position);
+	light_vector = normalize(subtract_vectors(scene->light.position,
+				intersection_point));
+	diffuse_intensity = inner_product(plane_normal, light_vector);
+	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
+	return (diffuse_intensity);
+}
 
 void	set_plane_color(t_scene *scene, int x, int y, double diffuse)
 {
 	int	color;
 
 	color = plane_calculate_shade_color(scene, diffuse);
-	printf("color = %d\n", color);
 	mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, color);
 }
 
