@@ -26,51 +26,48 @@ int	plane_calculate_shade_color(t_scene *scene, double diffuse)
 {
 	t_color	extracted_color;
 	t_color	shade_color;
-	t_color	direct_color;
-	double	direct_intensity;
 	int		color;
 
-	extracted_color = plane_extract_color_components(scene->objects->next->color);
-	direct_intensity = diffuse * scene->light.blightness;
-	direct_color.r = (int)(direct_intensity * extracted_color.r);
-	direct_color.g = (int)(direct_intensity * extracted_color.g);
-	direct_color.b = (int)(direct_intensity * extracted_color.b);
+	extracted_color = plane_extract_color_components
+		(scene->objects->next->color);
 	shade_color.r = clamp((int)(scene->ambient.ratio * extracted_color.r
-				+ diffuse * extracted_color.r + direct_color.r), 0, 255);
-	shade_color.g = clamp((int)(scene->ambient.ratio * extracted_color.r
-				+ diffuse * extracted_color.g + direct_color.g), 0, 255);
+				+ diffuse * (extracted_color.r / 255.0)), 0, 255);
+	shade_color.g = clamp((int)(scene->ambient.ratio * extracted_color.g
+				+ diffuse * (extracted_color.g / 255.0)), 0, 255);
 	shade_color.b = clamp((int)(scene->ambient.ratio * extracted_color.b
-				+ diffuse * extracted_color.b + direct_color.b), 0, 255);
+				+ diffuse * (extracted_color.b / 255.0)), 0, 255);
 	color = (shade_color.r << 16) | (shade_color.g << 8) | shade_color.b;
 	return (color);
 }
 
-double	plane_process_intersection(t_scene *scene,
-		t_vector3 ray_direction, double t)
-{
-	t_vector3	intersection_point;
-	t_vector3	plane_normal;
-	t_vector3	light_vector;
-	double		diffuse_intensity;
+// double	plane_process_intersection(t_scene *scene,
+// 		t_vector3 ray_direction, double denominator)
+// {
+// 	t_vector3	intersection_point;
+// 	t_vector3	plane_normal;
+// 	t_vector3	light_vector;
+// 	double		diffuse_intensity;
 
-	intersection_point = (t_vector3){
-		scene->camera.position.x + ray_direction.x * t,
-		scene->camera.position.x + ray_direction.y * t,
-		scene->camera.position.x + ray_direction.z * t};
-	plane_normal = normalize(subtract_vectors(intersection_point,
-				scene->objects->position));
-	light_vector = normalize(subtract_vectors(scene->light.position,
-				intersection_point));
-	diffuse_intensity = inner_product(plane_normal, light_vector);
-	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
-	return (diffuse_intensity);
-}
+// 	intersection_point = (t_vector3){
+// 		scene->camera.position.x + ray_direction.x * denominator,
+// 		scene->camera.position.y + ray_direction.y * denominator,
+// 		scene->camera.position.z + ray_direction.z * denominator};
+// 	plane_normal = normalize(scene->objects->next->position);
+// 	light_vector = normalize(subtract_vectors(scene->light.position,
+// 				intersection_point));
+// 	diffuse_intensity = inner_product(plane_normal, light_vector);
+// 	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
+// 	if (diffuse_intensity > 0.0)
+// 		printf("deff = %f\n", diffuse_intensity);
+// 	return (diffuse_intensity);
+// }
 
 void	set_plane_color(t_scene *scene, int x, int y, double diffuse)
 {
 	int	color;
 
 	color = plane_calculate_shade_color(scene, diffuse);
+	printf("color = %d\n", color);
 	mlx_pixel_put(scene->mlx.ptr, scene->mlx.window, x, y, color);
 }
 
@@ -79,18 +76,16 @@ void	render_plane(t_scene *scene, int x, int y)
 	t_vector3	ray_direction;
 	t_vector3	plane_normal;
 	double		denominator;
-	double		t;
 	double		diffuse;
 
 	ray_direction = calculate_ray_direction(x, y);
 	plane_normal = normalize(scene->objects->next->position);
-	denominator = inner_product(ray_direction, plane_normal);
+	denominator = inner_product(plane_normal, ray_direction);
 	if (denominator != 0)
 	{
-		t = inner_product(ray_direction, plane_normal) / denominator;
-		if (t >= 0)
+		if (denominator >= 0)
 		{
-			diffuse = plane_process_intersection(scene, ray_direction, t);
+			diffuse = clamp(denominator, 0.0, 1.0);
 			set_plane_color(scene, x, y, diffuse);
 		}
 	}
@@ -122,16 +117,16 @@ int	main(void)
 	init_mlx(&scene);
 	scene.objects = (t_object *)malloc(sizeof(t_object));
 	scene.objects->next = (t_object *)malloc(sizeof(t_object));
-	scene.camera.position = (t_vector3){0, 0, -2};
+	scene.camera.position = (t_vector3){0, 0, -10};
 	scene.objects->diameter = 4.0;
-	scene.objects->color.r = 255;
-	scene.objects->color.g = 255;
-	scene.objects->color.b = 255;
-	scene.objects->position = (t_vector3){0, 0, 5};
-	scene.objects->next->position = (t_vector3){0, -3, 5};
-	scene.objects->next->color.r = 0;
-	scene.objects->next->color.g = 0;
-	scene.objects->next->color.b = 0;
+	scene.objects->color.r = 50;
+	scene.objects->color.g = 50;
+	scene.objects->color.b = 50;
+	scene.objects->position = (t_vector3){0, 0, 0};
+	scene.objects->next->position = (t_vector3){0, -3, 0};
+	scene.objects->next->color.r = 255;
+	scene.objects->next->color.g = 255;
+	scene.objects->next->color.b = 255;
 	scene.ambient.ratio = 0.3;
 	scene.light.position = (t_vector3){-3, 5, -5};
 	render_scene(&scene);
