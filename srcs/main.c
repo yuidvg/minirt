@@ -109,6 +109,7 @@ void	render_scene(t_scene *scene)
 
 int	main(void)
 {
+
 	t_scene	scene;
 
 	init_mlx(&scene);
