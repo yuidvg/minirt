@@ -10,49 +10,49 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/main.h"
+#include "../includes/parse.h"
 
-static void	set_ambient(char *line, t_ambient *ambient)
+static void	parse_ambient(char *line, t_ambient *ambient)
 {
 	char	**split;
 
 	split = ft_split(line, ' ');
-	if (!split || split[0] == NULL || split[1] == NULL
-		|| set_atod(split[1], &ambient->ratio)
-		|| set_color(split[2], &ambient->color))
+	if (!split || !split[0] || !split[1] || split[2]
+		|| set_atod(split[0], &ambient->ratio)
+		|| !(0 <= ambient->ratio && ambient->ratio <= 1)
+		|| parse_color(split[1], &ambient->color))
 		gfree_exit(1, "Error\nFailed to parse ambient light");
 }
 
-static void	set_camera(char *line, t_camera *camera)
+static void	parse_camera(char *line, t_camera *camera)
 {
 	char		**split;
 
 	split = ft_split(line, ' ');
-	if (!split || !split[1] || !split[2] || split[3]
-		|| set_vector3(split[1], &camera->position)
-		|| set_vector3(split[2], &camera->direction)
-		|| set_atoi(split[3], &camera->fov))
+	if (!split || !split[0] || !split[1] || !split[2] || split[3]
+		|| parse_vector3(split[0], &camera->position)
+		|| parse_vector3(split[1], &camera->orientation)
+		|| set_atoi(split[2], &camera->fov)
+		|| !(0 <= camera->fov && camera->fov <= 180)
+		|| !(0 <= camera->orientation.x && camera->orientation.x <= 1)
+		|| !(0 <= camera->orientation.y && camera->orientation.y <= 1)
+		|| !(0 <= camera->orientation.z && camera->orientation.z <= 1))
 		gfree_exit(1, "Error\nFailed to parse camera");
 }
 
-static void	set_light(char *line, t_scene *scene)
+static void	parse_light(char *line, t_light *light)
 {
-	char	**split;
-	t_light	*light;
+	char		**split;
 
 	split = ft_split(line, ' ');
-	if (split[0] == NULL || split[1] == NULL || split[2] == NULL || split[3] == NULL)
+	if (!split || !split[0] || !split[1] || !split[2] || split[3]
+		|| parse_vector3(split[0], &light->position)
+		|| set_atod(split[1], &light->blightness)
+		|| !(0 <= light->blightness && light->blightness <= 1)
+		|| parse_color(split[2], &light->color))
 		gfree_exit(1, "Error\nFailed to parse light");
-	light = (t_light *)galloc(sizeof(t_light));
-	if (light == NULL)
-		gfree_exit(1, "Error\nFailed to allocate memory");
-	light->position = (t_vector3){ft_atof(split[1]), ft_atof(split[2]), ft_atof(split[3])};
-	light->ratio = ft_atof(split[4]);
-	light->color = get_color(split[5]);
-	light->next = scene->light;
-	scene->light = light;
-	free_split(split);
 }
+
 
 void	init_scene(char *filename, t_scene *scene)
 {
@@ -62,20 +62,21 @@ void	init_scene(char *filename, t_scene *scene)
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		gfree_exit(1, "Error\nFailed to open file");
+	scene->objects = NULL;
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, "A ", 2))
-			set_ambient(line + 2, scene);
-		else if (ft_strncmp(line, "C ", 2))
-			set_camera(line + 2, scene);
-		else if (ft_strncmp(line, "L ", 2))
-			set_light(line + 2, scene);
+		if (!ft_strncmp(line, "A ", 2))
+			parse_ambient(line + 2, &scene->ambient);
+		else if (!ft_strncmp(line, "C ", 2))
+			parse_camera(line + 2, &scene->camera);
+		else if (!ft_strncmp(line, "L ", 2))
+			parse_light(line + 2, &scene->light);
 		else if (ft_strncmp(line, "sp ", 3)
 			|| ft_strncmp(line, "pl ", 3) || ft_strncmp(line, "cy ", 3))
-			add_object(line, scene);
+			add_object(line, &scene->objects);
 		else
 			gfree_exit(1, "Error\nFailed to parse scene");
 	}

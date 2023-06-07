@@ -93,6 +93,8 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	read_size = 1;
+	if (!saves[fd])
+		saves[fd] = ft_strdup("");
 	while (read_size != 0 && ft_strlen_c(saves[fd], '\n') == 0)
 	{
 		read_size = read(fd, buf, BUFFER_SIZE);

@@ -10,16 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/utils.h"
+#include "../../includes/calculate.h"
 
-int	set_color(char *str, t_color *color)
+t_object	*new_object(t_object object)
 {
-	char	**rgb;
+	t_object	*new;
 
-	rgb = ft_split(str, ',');
-	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
-		return (1);
-	if (set_atod(rgb[0], &color->r) || set_atod(rgb[1], &color->g)
-		|| set_atod(rgb[2], &color->b))
-		return (1);
+	new = galloc(sizeof(t_object));
+	new->type = object.type;
+	new->color = object.color;
+	new->position = object.position;
+	new->axis = object.axis;
+	new->diameter = object.diameter;
+	new->height = object.height;
+	new->next = NULL;
+	return (new);
 }

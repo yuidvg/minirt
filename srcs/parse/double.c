@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/utils.h"
+#include "../../includes/calculate.h"
 
 static double	get_sign(char c)
 {
@@ -60,6 +60,7 @@ int	set_atod(char *str, double *num)
 
 	i = 0;
 	*num = 0;
+	sign = 1;
 	if (str[i] == '-' || str[i] == '+')
 		sign = get_sign(str[i++]);
 	if (insert_integer(num, str, &i))
@@ -70,13 +71,4 @@ int	set_atod(char *str, double *num)
 		return (1);
 	*num *= sign;
 	return (0);
-}
-
-double	clamp(double value, double min, double max)
-{
-	if (value < min)
-		return (min);
-	if (value > max)
-		return (max);
-	return (value);
 }

@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/utils.h"
+#include "../../includes/calculate.h"
 
-int	will_overflow(long num, int next)
+static int	will_overflow(int num, int next)
 {
 	if (num > INT_MAX / 10
-		|| (num == INT_MAX / 10 && (long)next > INT_MAX % 10))
+		|| (num == INT_MAX / 10 && next > INT_MAX % 10))
 	{
 		errno = ERANGE;
 		return (1);
@@ -23,7 +23,7 @@ int	will_overflow(long num, int next)
 	return (0);
 }
 
-int	will_underflow(long num, int next)
+static int	will_underflow(int num, int next)
 {
 	num *= -1;
 	next *= -1;
@@ -53,10 +53,11 @@ int	set_atoi(char *str, int *num)
 	}
 	while ('0' <= str[i] && str[i] <= '9')
 	{
-		if (sign == 1 && will_overflow(num, str[i] - '0'))
-			return ((int)LONG_MAX);
-		if (sign == -1 && will_underflow(num, str[i] - '0'))
-			return ((int)LONG_MIN);
+		if (sign == 1 && will_overflow(*num, str[i] - '0'))
+			return (1);
+		if (sign == -1 && will_underflow(*num, str[i] - '0'))
+			return (1);
 		*num = (*num * 10) + (str[i++] - '0');
 	}
+	return (0);
 }

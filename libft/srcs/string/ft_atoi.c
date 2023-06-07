@@ -12,7 +12,7 @@
 
 #include "../../includes/libft.h"
 
-int	will_overflow(long num, int next)
+static int	will_overflow(long num, int next)
 {
 	if (num > INT_MAX / 10
 		|| (num == INT_MAX / 10 && (long)next > INT_MAX % 10))
@@ -23,7 +23,7 @@ int	will_overflow(long num, int next)
 	return (0);
 }
 
-int	will_underflow(long num, int next)
+static int	will_underflow(long num, int next)
 {
 	num *= -1;
 	next *= -1;

@@ -18,7 +18,7 @@ void	*ft_calloc(size_t count, size_t size)
 
 	if (size != 0 && count > SIZE_MAX / size)
 		return (NULL);
-	alcd_ptr = galloc(count * size);
+	alcd_ptr = malloc(count * size);
 	if (!alcd_ptr)
 		return (NULL);
 	ft_bzero(alcd_ptr, count * size);
@@ -38,10 +38,21 @@ static void	gfree(t_list *garbages)
 	}
 }
 
+static t_list	*lstnew(t_list *content)
+{
+	t_list	*new_node;
+
+	new_node = ft_calloc(1, sizeof(t_list));
+	if (!new_node)
+		gfree_exit(-1, "Error: malloc failed\n");
+	new_node->content = content;
+	return (new_node);
+}
+
 void	*galloc(size_t size)
 {
-	void			*allocated;
-	t_list			*new;
+	void			*new_mem;
+	t_list			*new_node;
 	static t_list	*garbages;
 
 	if (size == 0)
@@ -49,21 +60,12 @@ void	*galloc(size_t size)
 		gfree(garbages);
 		return (NULL);
 	}
-	allocated = ft_calloc(1, size);
-	if (!allocated)
-	{
-		gfree(garbages);
-		return (NULL);
-	}
-	new = ft_lstnew(allocated);
-	if (!new)
-	{
-		free(allocated);
-		gfree(garbages);
-		return (NULL);
-	}
-	ft_lstadd_back(&garbages, new);
-	return (allocated);
+	new_mem = ft_calloc(1, size);
+	if (!new_mem)
+		gfree_exit(-1, "FATAL: malloc failed\n");
+	new_node = lstnew(new_mem);
+	ft_lstadd_front(&garbages, new_node);
+	return (new_mem);
 }
 
 void	gfree_exit(int exit_status, char *fmt, ...)
