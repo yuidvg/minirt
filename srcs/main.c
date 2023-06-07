@@ -38,7 +38,7 @@ int	plane_calculate_shade_color(t_scene *scene, double diffuse)
 	direct_color.b = (int)(direct_intensity * extracted_color.b);
 	shade_color.r = clamp((int)(scene->ambient.ratio * extracted_color.r
 				+ diffuse * extracted_color.r + direct_color.r), 0, 255);
-	shade_color.g = clamp((int)(scene->ambient.ratio * extracted_color.r
+	shade_color.g = clamp((int)(scene->ambient.ratio * extracted_color.g
 				+ diffuse * extracted_color.g + direct_color.g), 0, 255);
 	shade_color.b = clamp((int)(scene->ambient.ratio * extracted_color.b
 				+ diffuse * extracted_color.b + direct_color.b), 0, 255);
@@ -58,11 +58,9 @@ double	plane_process_intersection(t_scene *scene,
 		scene->camera.position.x + ray_direction.x * t,
 		scene->camera.position.x + ray_direction.y * t,
 		scene->camera.position.x + ray_direction.z * t};
-	plane_normal = normalize(subtract_vectors(intersection_point,
-				scene->objects->position));
 	light_vector = normalize(subtract_vectors(scene->light.position,
 				intersection_point));
-	diffuse_intensity = inner_product(plane_normal, light_vector);
+	diffuse_intensity = inner_product(scene->objects->orientation, light_vector);
 	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
 	return (diffuse_intensity);
 }
@@ -78,23 +76,62 @@ void	set_plane_color(t_scene *scene, int x, int y, double diffuse)
 void	render_plane(t_scene *scene, int x, int y)
 {
 	t_vector3	ray_direction;
-	t_vector3	plane_normal;
 	double		denominator;
 	double		t;
 	double		diffuse;
 
 	ray_direction = calculate_ray_direction(x, y);
-	plane_normal = normalize(scene->objects->next->position);
-	denominator = inner_product(ray_direction, plane_normal);
+	denominator = inner_product(ray_direction, scene->objects->orientation);
 	if (denominator != 0)
 	{
-		t = inner_product(ray_direction, plane_normal) / denominator;
+		t = inner_product(ray_direction, scene->objects->orientation) / denominator;
 		if (t >= 0)
 		{
 			diffuse = plane_process_intersection(scene, ray_direction, t);
 			set_plane_color(scene, x, y, diffuse);
 		}
 	}
+}
+
+t_ray	get_1st_intersection(t_object objects, t_ray camera_ray)
+{
+	t_ray	intersection;
+	t_ray	nearest_intersection;
+	double	nearest_t;
+
+	nearest_t = INFINITY;
+	while (objects)
+	{
+		intersection = get_intersection(objects, camera_ray);
+		if (intersection.t < nearest_t)
+		{
+			nearest_t = intersection.t;
+			nearest_intersection = intersection;
+		}
+		objects = objects->next;
+	}
+	return (nearest_intersection);
+}
+
+t_color	get_color(t_scene *scene, t_ray camera_ray)
+{
+	t_ray	camera_ray;
+	t_ray	intersection;
+
+	intersection = get_1st_intersection(scene->objects, camera_ray);
+	return (scene->objects->color);
+}
+
+t_ray	get_camera_ray(int x, int y, t_camera *camera)
+{
+	t_ray	camera_ray;
+
+	camera_ray.position = camera->position;
+	camera_ray.orientation.x = (x - WIDTH / 2) / (WIDTH / 2.0);
+	camera_ray.orientation.y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
+	camera_ray.orientation.z = WIDTH / (2.0 * tan(camera->fov / 2.0));
+	camera_ray.orientation = normalize(camera_ray.orientation);
+	return (camera_ray);
 }
 
 void	render_scene(t_scene *scene)
@@ -108,35 +145,21 @@ void	render_scene(t_scene *scene)
 		x = 0;
 		while (x < WIDTH)
 		{
-			render_plane(scene, x, y);
-			render_sphere(scene, x, y);
+			get_color(scene, get_camera_ray(x, y, &scene->camera));
 			x++;
 		}
 		y++;
 	}
 }
 
-
-int main(void)
+int	main(int argc, char **argv)
 {
-
 	t_scene	scene;
 
+	if (argc != 2)
+		gfree_exit(1, "Error\nInvalid number of arguments\n");
 	init_mlx(&scene);
-	scene.objects = (t_object *)malloc(sizeof(t_object));
-	scene.objects->next = (t_object *)malloc(sizeof(t_object));
-	scene.camera.position = (t_vector3){0, 0, -2};
-	scene.objects->diameter = 4.0;
-	scene.objects->color.r = 255;
-	scene.objects->color.g = 255;
-	scene.objects->color.b = 255;
-	scene.objects->position = (t_vector3){0, 0, 5};
-	scene.objects->next->position = (t_vector3){0, -3, 5};
-	scene.objects->next->color.r = 0;
-	scene.objects->next->color.g = 0;
-	scene.objects->next->color.b = 0;
-	scene.ambient.ratio = 0.3;
-	scene.light.position = (t_vector3){-3, 5, -5};
+	init_scene(argv[1], &scene);
 	render_scene(&scene);
 	mlx_loop(scene.mlx.ptr);
 	gfree_exit(0, NULL);

@@ -22,6 +22,4 @@ int		set_atoi(char *str, int *num);
 int		parse_vector3(char *str, t_vector3 *vec);
 int		add_object(char *str, t_object **object);
 
-void	init_scene(char *filename, t_scene *scene);
-
 #endif

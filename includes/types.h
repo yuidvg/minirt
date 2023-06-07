@@ -96,7 +96,7 @@ typedef struct s_object
 
 typedef struct s_
 {
-	t_object	*object;
+	t_object	*this;
 	t_ray		*ray;
 }	t_;
 
