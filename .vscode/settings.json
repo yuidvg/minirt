@@ -15,5 +15,6 @@
 		"fcntl.h": "c",
 		"parse.h": "c",
 		"__node_handle": "c",
+		"calculate.h": "c"
 	}
 }

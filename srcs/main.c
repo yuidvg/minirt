@@ -58,9 +58,9 @@ double	plane_process_intersection(t_scene *scene,
 		scene->camera.position.x + ray_direction.x * t,
 		scene->camera.position.x + ray_direction.y * t,
 		scene->camera.position.x + ray_direction.z * t};
-	light_vector = normalize(subtract_vectors(scene->light.position,
+	light_vector = normalize_vector(subtract_vectors(scene->light.position,
 				intersection_point));
-	diffuse_intensity = inner_product(scene->objects->orientation, light_vector);
+	diffuse_intensity = inner_product_vectors(scene->objects->orientation, light_vector);
 	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
 	return (diffuse_intensity);
 }
@@ -81,10 +81,10 @@ void	render_plane(t_scene *scene, int x, int y)
 	double		diffuse;
 
 	ray_direction = calculate_ray_direction(x, y);
-	denominator = inner_product(ray_direction, scene->objects->orientation);
+	denominator = inner_product_vectors(ray_direction, scene->objects->orientation);
 	if (denominator != 0)
 	{
-		t = inner_product(ray_direction, scene->objects->orientation) / denominator;
+		t = inner_product_vectors(ray_direction, scene->objects->orientation) / denominator;
 		if (t >= 0)
 		{
 			diffuse = plane_process_intersection(scene, ray_direction, t);
@@ -93,29 +93,28 @@ void	render_plane(t_scene *scene, int x, int y)
 	}
 }
 
-t_ray	get_1st_intersection(t_object objects, t_ray camera_ray)
+t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 {
 	t_ray	intersection;
 	t_ray	nearest_intersection;
 	double	nearest_t;
 
 	nearest_t = INFINITY;
-	while (objects)
+	while (object)
 	{
-		intersection = get_intersection(objects, camera_ray);
-		if (intersection.t < nearest_t)
+		intersection = object->get_intersection(&(t_){object, camera_ray});
+		if (magnitude(subtract_vectors(intersection.position, camera_ray->position)) < nearest_t)
 		{
 			nearest_t = intersection.t;
 			nearest_intersection = intersection;
 		}
-		objects = objects->next;
+		object = object->next;
 	}
 	return (nearest_intersection);
 }
 
 t_color	get_color(t_scene *scene, t_ray camera_ray)
 {
-	t_ray	camera_ray;
 	t_ray	intersection;
 
 	intersection = get_1st_intersection(scene->objects, camera_ray);
@@ -130,7 +129,7 @@ t_ray	get_camera_ray(int x, int y, t_camera *camera)
 	camera_ray.orientation.x = (x - WIDTH / 2) / (WIDTH / 2.0);
 	camera_ray.orientation.y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
 	camera_ray.orientation.z = WIDTH / (2.0 * tan(camera->fov / 2.0));
-	camera_ray.orientation = normalize(camera_ray.orientation);
+	camera_ray.orientation = normalize_vector(camera_ray.orientation);
 	return (camera_ray);
 }
 

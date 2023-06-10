@@ -81,7 +81,13 @@ typedef struct s_light
 	t_color		color;
 }	t_light;
 
-struct	s_;
+struct	s_object;
+
+typedef struct s_
+{
+	struct s_object	*this;
+	t_ray			*ray;
+}	t_;
 
 typedef struct s_object
 {
@@ -90,15 +96,10 @@ typedef struct s_object
 	t_vector3			orientation;
 	double				diameter;
 	double				height;
-	t_ray				(*get_intersection)(struct s_ *);
+	t_ray				(*get_intersection)(t_ *);
 	struct s_object		*next;
 }	t_object;
 
-typedef struct s_
-{
-	t_object	*this;
-	t_ray		*ray;
-}	t_;
 
 typedef struct s_scene
 {
