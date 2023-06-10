@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/03 15:32:47 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/10 17:04:28 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,13 @@ void	init_mlx(t_scene *scene)
 	if (!scene->mlx.image.addr)
 		ft_exit(-1, scene->mlx.ptr, scene->mlx.window, scene->mlx.image.ptr);
 	mlx_hook(scene->mlx.window, 17, 1L << 17, mlx_exit, scene);
+}
+
+void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = scene->mlx.image.addr + (y * scene->mlx.image.line_len + x
+			* (scene->mlx.image.bpp / 8));
+	*(unsigned int *)dst = color;
 }

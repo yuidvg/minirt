@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ${USER} <${USER}@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/04 23:30:20 by ${USER}          ###   ########.fr       */
+/*   Updated: 2023/06/10 17:11:59 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,26 @@ t_color	extract_color_components(t_color source_color)
 }
 
 //return rgb color
-int	calculate_shade_color(t_scene *scene, double diffuse)
+t_color	calculate_shade_color(t_scene *scene, double diffuse)
 {
 	t_color	extracted_color;
 	t_color	shade_color;
-	t_color	direct_color;
 	double	direct_intensity;
-	int		color;
 
 	extracted_color = extract_color_components(scene->objects->color);
-	direct_intensity = diffuse * scene->light.blightness;
-	direct_color.r = (int)(direct_intensity * extracted_color.r);
-	direct_color.g = (int)(direct_intensity * extracted_color.g);
-	direct_color.b = (int)(direct_intensity * extracted_color.b);
-	shade_color.r = clamp((int)(scene->ambient.ratio * extracted_color.r
-				+ diffuse * extracted_color.r + direct_color.r), 0, 255);
-	shade_color.g = clamp((int)(scene->ambient.ratio * extracted_color.r
-				+ diffuse * extracted_color.g + direct_color.g), 0, 255);
-	shade_color.b = clamp((int)(scene->ambient.ratio * extracted_color.b
-				+ diffuse * extracted_color.b + direct_color.b), 0, 255);
-	color = (shade_color.r << 16) | (shade_color.g << 8) | shade_color.b;
-	return (color);
+	direct_intensity = diffuse * scene->light.blightness * scene->light.ratio;
+	shade_color.r = clamp((int)(direct_intensity * extract_color.r), 0, 255);
+	shade_color.g = clamp((int)(direct_intensity * extract_color.g), 0, 255);
+	shade_color.b = clamp((int)(direct_intensity * extract_color.b), 0, 255);
+	return (shade_color);
+}
+
+int convert_color_to_int(t_color color)
+{
+	int	rgb;
+	rgb = (color.r << 16) | (color.g << 8) | color.b;
+
+	return (rgb);
 }
 
 double	process_intersection(t_scene *scene, t_vector3 ray_direction, double t)
