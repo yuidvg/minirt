@@ -16,11 +16,13 @@
 # include "libs.h"
 # include "types.h"
 
+//Object
+t_ray		get_intersection_plane(t_ *data);
+
 // Vector
 t_vector3	scale_vector(t_vector3 v, double scalar);
 double		magnitude_vector(t_vector3 vector);
 t_vector3	normalize_vector(t_vector3 v);
-
 
 //Vectors
 t_vector3	add_vectors(t_vector3 v1, t_vector3 v2);

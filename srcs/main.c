@@ -97,15 +97,19 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 {
 	t_ray	intersection;
 	t_ray	nearest_intersection;
-	double	nearest_t;
+	double	nearest_distance;
+	double	distance;
 
-	nearest_t = INFINITY;
+	nearest_distance = INFINITY;
+	nearest_intersection = (t_ray){(t_vector3){0, 0, 0}, (t_vector3){0, 0, 0}};
 	while (object)
 	{
 		intersection = object->get_intersection(&(t_){object, camera_ray});
-		if (magnitude(subtract_vectors(intersection.position, camera_ray->position)) < nearest_t)
+		distance = magnitude(subtract_vectors(intersection.position,
+					camera_ray->position));
+		if (distance < nearest_distance)
 		{
-			nearest_t = intersection.t;
+			nearest_distance = distance;
 			nearest_intersection = intersection;
 		}
 		object = object->next;
@@ -117,7 +121,7 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 {
 	t_ray	intersection;
 
-	intersection = get_1st_intersection(scene->objects, camera_ray);
+	intersection = get_1st_intersection(scene->objects, &camera_ray);
 	return (scene->objects->color);
 }
 

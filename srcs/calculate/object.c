@@ -12,17 +12,27 @@
 
 #include "../../includes/calculate.h"
 
-t_object	*new_object(t_object object)
+t_ray	get_intersection_plane(t_ *data)
 {
-	t_object	*new;
+	t_ray		intersection;
+	t_object	*plane;
+	t_ray		*camera;
+	double		t;
+	t_vector3	s;
 
-	new = galloc(sizeof(t_object));
-	new->type = object.type;
-	new->color = object.color;
-	new->position = object.position;
-	new->axis = object.axis;
-	new->diameter = object.diameter;
-	new->height = object.height;
-	new->next = NULL;
-	return (new);
+	plane = data->this;
+	camera = data->camera_ray;
+	s = subtract_vectors(camera->position, plane->position);
+	t = -(inner_product_vectors(s, plane->orientation)
+			/ inner_product_vectors(camera->orientation, plane->orientation));
+	if (t > 0
+		&& inner_product_vectors(camera->orientation, plane->orientation) < 0)
+		return ((t_ray){add_vectors(add_vectors(s,
+					scale_vector(camera->orientation, t)), plane->position),
+			plane->orientation});
+	else if (t > 0)
+		return ((t_ray){add_vectors(add_vectors(s,
+					scale_vector(camera->orientation, t)), plane->position),
+			scale_vector(plane->orientation, -1)});
+	return ((t_ray){0});
 }

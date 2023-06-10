@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../includes/parse.h"
+#include "../includes/calculate.h"
 
 static int	parse_sphere(char *line, t_object *object)
 {
@@ -41,6 +42,7 @@ static int	parse_plane(char *line, t_object *object)
 		|| !(0 <= object->orientation.z && object->orientation.z <= 1)
 		|| parse_color(split[2], &object->color))
 		return (1);
+	object->get_intersection = get_intersection_plane;
 	return (0);
 }
 
