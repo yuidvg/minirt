@@ -25,6 +25,7 @@ static int	parse_sphere(char *line, t_object *object)
 		|| parse_color(split[2], &object->color)
 		|| !(0 <= object->diameter))
 		return (1);
+	object->get_intersection = get_intersection_sphere;
 	return (0);
 }
 
@@ -65,6 +66,7 @@ static int	parse_cylinder(char *line, t_object *object)
 		|| !(0 <= object->diameter)
 		|| !(0 <= object->height))
 		return (1);
+	object->get_intersection = get_intersection_cylinder;
 	return (0);
 }
 
@@ -81,7 +83,7 @@ int	add_object(char *str, t_object **object)
 	}
 	else if (ft_strncmp(str, "pl ", 3) == 0)
 	{
- 		if (parse_plane(str + 3, new))
+		if (parse_plane(str + 3, new))
 			return (1);
 	}
 	else if (ft_strncmp(str, "cy ", 3) == 0)

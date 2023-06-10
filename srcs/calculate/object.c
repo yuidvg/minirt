@@ -36,3 +36,54 @@ t_ray	get_intersection_plane(t_ *data)
 			scale_vector(plane->orientation, -1)});
 	return ((t_ray){0});
 }
+
+t_ray	get_intersection_sphere(t_ *data)
+{
+	t_ray		intersection;
+	t_object	*sphere;
+	t_ray		*camera;
+	double		t;
+	t_vector3	s;
+
+	sphere = data->this;
+	camera = data->camera_ray;
+	s = subtract_vectors(camera->position, sphere->position);
+	t = inner_product_vectors(camera->orientation, s)
+		* inner_product_vectors(camera->orientation, s)
+		- inner_product_vectors(camera->orientation, camera->orientation)
+		* (inner_product_vectors(s, s) - sphere->diameter * sphere->diameter);
+	if (t < 0)
+		return ((t_ray){0});
+	t = (-inner_product_vectors(camera->orientation, s) - sqrt(t))
+		/ inner_product_vectors(camera->orientation, camera->orientation);
+	if (t > 0)
+		return ((t_ray){add_vectors(camera->position,
+				scale_vector(camera->orientation, t)), s});
+	return ((t_ray){0});
+}
+
+t_ray	get_intersection_cylinder(t_ *data)
+{
+	t_ray		intersection;
+	t_object	*cylinder;
+	t_ray		*camera;
+	double		t;
+	t_vector3	s;
+
+	cylinder = data->this;
+	camera = data->camera_ray;
+	s = subtract_vectors(camera->position, cylinder->position);
+	t = inner_product_vectors(camera->orientation, cylinder->orientation)
+		* inner_product_vectors(camera->orientation, cylinder->orientation)
+		- inner_product_vectors(camera->orientation, camera->orientation)
+		* (inner_product_vectors(s, s)
+			- cylinder->diameter * cylinder->diameter);
+	if (t < 0)
+		return ((t_ray){0});
+	t = (-inner_product_vectors(camera->orientation, s) - sqrt(t))
+		/ inner_product_vectors(camera->orientation, camera->orientation);
+	if (t > 0)
+		return ((t_ray){add_vectors(camera->position,
+				scale_vector(camera->orientation, t)), s});
+	return ((t_ray){0});
+}

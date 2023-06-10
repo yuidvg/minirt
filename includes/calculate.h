@@ -18,6 +18,8 @@
 
 //Object
 t_ray		get_intersection_plane(t_ *data);
+t_ray		get_intersection_sphere(t_ *data);
+t_ray		get_intersection_cylinder(t_ *data);
 
 // Vector
 t_vector3	scale_vector(t_vector3 v, double scalar);
