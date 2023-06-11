@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/10 17:11:59 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/11 11:18:29 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,6 @@ t_color	calculate_shade_color(t_scene *scene, double diffuse)
 	shade_color.g = clamp((int)(direct_intensity * extract_color.g), 0, 255);
 	shade_color.b = clamp((int)(direct_intensity * extract_color.b), 0, 255);
 	return (shade_color);
-}
-
-int convert_color_to_int(t_color color)
-{
-	int	rgb;
-	rgb = (color.r << 16) | (color.g << 8) | color.b;
-
-	return (rgb);
 }
 
 double	process_intersection(t_scene *scene, t_vector3 ray_direction, double t)
