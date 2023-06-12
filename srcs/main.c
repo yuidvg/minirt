@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ${USER} <${USER}@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/04 23:33:41 by ${USER}          ###   ########.fr       */
+/*   Updated: 2023/06/12 11:22:52 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	while (object)
 	{
 		intersection = object->get_intersection(&(t_){object, camera_ray});
-		if (magnitude(subtract_vectors(intersection.position, camera_ray->position)) < nearest_t)
+		if (magnitude_vector(subtract_vectors(intersection.position, camera_ray->position)) < nearest_t)
 		{
 			nearest_t = intersection.t;
 			nearest_intersection = intersection;
@@ -113,11 +113,27 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	return (nearest_intersection);
 }
 
+t_vector3 get_light_vector(t_scene *scene, t_ray intersection)
+{
+	t_vector3	light_vector;
+
+	light_vector = normalize_vector(subtract_vectors(scene->light.position,
+				intersection.position));
+	return (light_vector);
+}
+
 t_color	get_color(t_scene *scene, t_ray camera_ray)
 {
-	t_ray	intersection;
+	t_ray		intersection;
+	t_vector3	light_vector;
+	int			diffuse;
 
-	intersection = get_1st_intersection(scene->objects, camera_ray);
+	intersection = get_1st_intersection(scene->objects, &camera_ray);
+	//normal_vector
+	light_vector = get_light_vector(scene, intersection);
+	diffuse = inner_product_vectors(intersection.orientation, light_vector);
+	diffuse = clamp(diffuse, 0.0, 1.0);
+	scene->objects->color = calculate_shade_color(scene, diffuse);
 	return (scene->objects->color);
 }
 
@@ -137,6 +153,7 @@ void	render_scene(t_scene *scene)
 {
 	int			x;
 	int			y;
+	t_color		color;
 
 	y = 0;
 	while (y < HEIGHT)
@@ -144,7 +161,8 @@ void	render_scene(t_scene *scene)
 		x = 0;
 		while (x < WIDTH)
 		{
-			get_color(scene, get_camera_ray(x, y, &scene->camera));
+			color = get_color(scene, get_camera_ray(x, y, &scene->camera));
+			my_mlx_pixel_put(scene, x, y, comvert_color_to_int(color));
 			x++;
 		}
 		y++;
