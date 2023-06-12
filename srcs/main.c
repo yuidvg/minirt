@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/10 17:13:37 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:22:52 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	while (object)
 	{
 		intersection = object->get_intersection(&(t_){object, camera_ray});
-		if (magnitude(subtract_vectors(intersection.position, camera_ray->position)) < nearest_t)
+		if (magnitude_vector(subtract_vectors(intersection.position, camera_ray->position)) < nearest_t)
 		{
 			nearest_t = intersection.t;
 			nearest_intersection = intersection;
