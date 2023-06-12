@@ -6,7 +6,7 @@
 /*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/12 11:22:52 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/12 11:30:50 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	int			diffuse;
 
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
-	//normal_vector
 	light_vector = get_light_vector(scene, intersection);
 	diffuse = inner_product_vectors(intersection.orientation, light_vector);
 	diffuse = clamp(diffuse, 0.0, 1.0);
@@ -162,11 +161,12 @@ void	render_scene(t_scene *scene)
 		while (x < WIDTH)
 		{
 			color = get_color(scene, get_camera_ray(x, y, &scene->camera));
-			my_mlx_pixel_put(scene, x, y, comvert_color_to_int(color));
+			my_mlx_pixel_put(scene, x, y, convert_color_to_int(color));
 			x++;
 		}
 		y++;
 	}
+	mlx_put_image_to_window(scene->mlx.ptr, scene->mlx.window, scene->mlx.img, 0, 0);
 }
 
 int	main(int argc, char **argv)
