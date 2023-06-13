@@ -86,7 +86,7 @@ struct	s_object;
 typedef struct s_
 {
 	struct s_object	*this;
-	t_ray			*ray;
+	t_ray			*camera_ray;
 }	t_;
 
 typedef struct s_object

@@ -16,11 +16,18 @@ MLXINCLUDE = /usr/local/include/
 NAME = minirt
 SRCSDIR = srcs/
 SRCS = main.c mlx.c\
-		utils/double.c \
-		utils/calculate.c utils/color.c\
-		utils/objects.c\
-		utils/vector.c\
-		utils/sphere.c
+		calculate/double.c \
+		calculate/calculate.c\
+		calculate/object.c\
+		calculate/vector.c\
+		calculate/vectors.c\
+		calculate/sphere.c\
+		parse/color.c\
+		parse/double.c\
+		parse/integer.c\
+		parse/object.c\
+		parse/scene.c\
+		parse/vector.c\
 
 OBJSDIR = objs/
 OBJS = $(SRCS:%.c=$(OBJSDIR)%.o)
