@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/13 11:40:56 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/13 14:44:49 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	while (object)
 	{
 		intersection = object->get_intersection(&(t_){object, camera_ray});
-		if (magnitude_vector(subtract_vectors(intersection.position, camera_ray->position)) < nearest_t)
+		if (magnitude_vector(subtract_vectors(intersection.position, camera_ray->position)) < nearest_distance)
 		{
 			nearest_distance = distance;
 			nearest_intersection = intersection;
@@ -123,7 +123,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	return (nearest_intersection);
 }
 
-t_vector3 get_light_vector(t_scene *scene, t_ray intersection)
+t_vector3	get_light_vector(t_scene *scene, t_ray intersection)
 {
 	t_vector3	light_vector;
 
@@ -177,7 +177,7 @@ void	render_scene(t_scene *scene)
 		}
 		y++;
 	}
-	mlx_put_image_to_window(scene->mlx.ptr, scene->mlx.window, scene->mlx.img, 0, 0);
+	mlx_put_image_to_window(scene->mlx.ptr, scene->mlx.window, scene->mlx.image.ptr, 0, 0);
 }
 
 int	main(int argc, char **argv)
