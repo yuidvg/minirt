@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/11 11:21:03 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/13 10:57:12 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	while (object)
 	{
 		intersection = object->get_intersection(&(t_){object, camera_ray});
-		distance = magnitude(subtract_vectors(intersection.position,
+		distance = magnitude_vector(subtract_vectors(intersection.position,
 					camera_ray->position));
 		if (distance < nearest_distance)
 		{
@@ -140,7 +140,7 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	t_vector3	light_vector;
 	int			diffuse;
 
-	intersection = get_1st_intersection(scene->objects, &camera_ray);//交点と法線ベクロツが求まる
+	intersection = get_1st_intersection(scene->objects, &camera_ray);
 	light_vector = get_light_vector(scene, intersection);
 	diffuse = inner_product_vectors(intersection.orientation, light_vector);
 	diffuse = clamp(diffuse, 0.0, 1.0);

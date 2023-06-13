@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   scene.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/03 15:32:47 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/11 17:15:29 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static void	parse_light(char *line, t_light *light)
 		|| parse_color(split[2], &light->color))
 		gfree_exit(1, "Error\nFailed to parse light");
 }
-
 
 void	init_scene(char *filename, t_scene *scene)
 {
