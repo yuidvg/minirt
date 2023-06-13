@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/13 18:11:01 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:24:09 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_color	calculate_shade_color(t_scene *scene, double diffuse)
 	t_color	extracted_color;
 	t_color	shade_color;
 	double	direct_intensity;
-	(void) diffuse;
 
 	extracted_color = scene->objects->color;
 	direct_intensity = diffuse + scene->ambient.ratio;
