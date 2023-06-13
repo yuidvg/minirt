@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/13 10:57:12 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/13 11:40:56 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	while (object)
 	{
 		intersection = object->get_intersection(&(t_){object, camera_ray});
-		distance = magnitude_vector(subtract_vectors(intersection.position,
-					camera_ray->position));
-		if (distance < nearest_distance)
+		if (magnitude_vector(subtract_vectors(intersection.position, camera_ray->position)) < nearest_t)
 		{
 			nearest_distance = distance;
 			nearest_intersection = intersection;
@@ -179,6 +177,7 @@ void	render_scene(t_scene *scene)
 		}
 		y++;
 	}
+	mlx_put_image_to_window(scene->mlx.ptr, scene->mlx.window, scene->mlx.img, 0, 0);
 }
 
 int	main(int argc, char **argv)
