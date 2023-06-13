@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/13 11:14:40 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:20:00 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 t_ray	get_intersection_plane(t_ *data)
 {
-	// t_ray		intersection;
 	t_object	*plane;
 	t_ray		*camera;
 	double		t;
@@ -34,12 +33,11 @@ t_ray	get_intersection_plane(t_ *data)
 		return ((t_ray){add_vectors(add_vectors(s,
 					scale_vector(camera->orientation, t)), plane->position),
 			scale_vector(plane->orientation, -1)});
-	return ((t_ray){.position = {0}, .orientation = {0}});
+	return ((t_ray){.position = {0, 0, 0}, .orientation = {0, 0, 0}});
 }
 
 t_ray	get_intersection_sphere(t_ *data)
 {
-	// t_ray		intersection;
 	t_object	*sphere;
 	t_ray		*camera;
 	double		t;
@@ -64,7 +62,6 @@ t_ray	get_intersection_sphere(t_ *data)
 
 t_ray	get_intersection_cylinder(t_ *data)
 {
-	// t_ray		intersection;
 	t_object	*cylinder;
 	t_ray		*camera;
 	double		t;

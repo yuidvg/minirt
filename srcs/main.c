@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/13 14:44:49 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:09:37 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,9 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	while (object)
 	{
 		intersection = object->get_intersection(&(t_){object, camera_ray});
-		if (magnitude_vector(subtract_vectors(intersection.position, camera_ray->position)) < nearest_distance)
+		distance = magnitude_vector(subtract_vectors(intersection.position,
+					camera_ray->position));
+		if (distance < nearest_distance)
 		{
 			nearest_distance = distance;
 			nearest_intersection = intersection;
@@ -137,14 +139,14 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	t_ray		intersection;
 	t_vector3	light_vector;
 	int			diffuse;
+	t_color		tmp;
 
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
 	light_vector = get_light_vector(scene, intersection);
 	diffuse = inner_product_vectors(intersection.orientation, light_vector);
 	diffuse = clamp(diffuse, 0.0, 1.0);
-	scene->objects->color = calculate_shade_color(scene, diffuse);
-	intersection = get_1st_intersection(scene->objects, &camera_ray);
-	return (scene->objects->color);
+	tmp = calculate_shade_color(scene, diffuse);
+	return (tmp);
 }
 
 t_ray	get_camera_ray(int x, int y, t_camera *camera)
