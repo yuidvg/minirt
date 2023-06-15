@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   object.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/03 15:32:47 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:57:26 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ static int	parse_plane(char *line, t_object *object)
 		|| !split[0] || !split[1] || !split[2] || split[3]
 		|| parse_vector3(split[0], &object->position)
 		|| parse_vector3(split[1], &object->orientation)
-		|| !(0 <= object->orientation.x && object->orientation.x <= 1)
-		|| !(0 <= object->orientation.y && object->orientation.y <= 1)
-		|| !(0 <= object->orientation.z && object->orientation.z <= 1)
+		|| !(-1 <= object->orientation.x && object->orientation.x <= 1)
+		|| !(-1 <= object->orientation.y && object->orientation.y <= 1)
+		|| !(-1 <= object->orientation.z && object->orientation.z <= 1)
 		|| parse_color(split[2], &object->color))
 		return (1);
 	object->get_intersection = get_intersection_plane;
@@ -57,9 +57,9 @@ static int	parse_cylinder(char *line, t_object *object)
 		|| split[5]
 		|| parse_vector3(split[0], &object->position)
 		|| parse_vector3(split[1], &object->orientation)
-		|| !(0 <= object->orientation.x && object->orientation.x <= 1)
-		|| !(0 <= object->orientation.y && object->orientation.y <= 1)
-		|| !(0 <= object->orientation.z && object->orientation.z <= 1)
+		|| !(-1 <= object->orientation.x && object->orientation.x <= 1)
+		|| !(-1 <= object->orientation.y && object->orientation.y <= 1)
+		|| !(-1 <= object->orientation.z && object->orientation.z <= 1)
 		|| set_atod(split[2], &object->diameter)
 		|| set_atod(split[3], &object->height)
 		|| parse_color(split[4], &object->color)

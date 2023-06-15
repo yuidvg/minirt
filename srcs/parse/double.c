@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heap.c                                             :+:      :+:    :+:   */
+/*   double.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ynishimu <ynishimu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/04/11 16:08:45 by ynishimu         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:52:25 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static double	get_sign(char c)
 {
 	if (c == '-')
-		return (1);
+		return (-1);
 	return (1);
 }
 
@@ -65,9 +65,7 @@ int	set_atod(char *str, double *num)
 		sign = get_sign(str[i++]);
 	if (insert_integer(num, str, &i))
 		return (1);
-	if (!str[i])
-		return (0);
-	if (insert_fraction(num, str + i + 1))
+	if (str[i] && insert_fraction(num, str + i + 1))
 		return (1);
 	*num *= sign;
 	return (0);
