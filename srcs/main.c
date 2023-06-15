@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/15 16:34:47 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:24:54 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
 	if (intersection.position.x == 0 && intersection.position.y == 0
 		&& intersection.position.z == 0)
-		tmp = (t_color){0, 0, 0};
+		tmp = (t_color){100, 149, 237};
 	else
 	{
 		light_vector = get_light_vector(scene, intersection);
