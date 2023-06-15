@@ -1,7 +1,6 @@
 #Compiler Preferences
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -I includes/
-CFLAGS_DEBUG = -g
 
 #Libft
 LIBFTDIR = libft/
@@ -27,10 +26,25 @@ SRCS = main.c mlx.c\
 		parse/integer.c\
 		parse/object.c\
 		parse/scene.c\
-		parse/vector.c\
-
+		parse/vector.c
 OBJSDIR = objs/
 OBJS = $(SRCS:%.c=$(OBJSDIR)%.o)
+
+#debug
+NAME_DEBUG=minirt_debug
+OBJSDIR_DEBUG=objs_debug/
+CFLAGS_DEBUG = -g -Wall -Werror -Wextra -I includes/
+LIBSFLAGS_DEBUG = -lm -L$(LIBFTDIR) -lft_debug -I$(MLXINCLUDE) -L$(MLXDIR) -lmlx -framework OpenGL -framework AppKit
+OBJS_DEBUG = $(SRCS:%.c=$(OBJSDIR_DEBUG)%.o)
+LIBFTNAME_DEBUG = $(LIBFTDIR)libft_debug.a
+$(LIBFTNAME_DEBUG):
+	make -C $(LIBFTDIR) debug
+debug: $(NAME_DEBUG)
+$(NAME_DEBUG): $(OBJS_DEBUG) $(LIBFTNAME_DEBUG)
+	$(CC) $(CFLAGS_DEBUG) $(LIBSFLAGS_DEBUG) $^ -o $@
+$(OBJSDIR_DEBUG)%.o: $(SRCSDIR)%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 all: $(NAME)
 
@@ -45,15 +59,12 @@ $(OBJSDIR)%.o: $(SRCSDIR)%.c
 
 clean:
 	make -C $(LIBFTDIR) clean
-	rm -rf $(OBJS)
+	rm -rf $(OBJS) $(OBJS_DEBUG)
 
 fclean: clean
 	make -C $(LIBFTDIR) fclean
-	rm -f $(NAME)
+	rm -f $(NAME) $(NAME_DEBUG)
 
 re: fclean all
 
-debug: $(OBJS)
-	$(CC) $(CFLAGS) $(CFLAGS_DEBUG) $(OBJS) -o $(NAME)
-
-.PHONY: fclean all re clean
+.PHONY: fclean all re clean debug

@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/11 17:15:29 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/13 18:56:29 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static void	parse_camera(char *line, t_camera *camera)
 		|| parse_vector3(split[1], &camera->orientation)
 		|| set_atoi(split[2], &camera->fov)
 		|| !(0 <= camera->fov && camera->fov <= 180)
-		|| !(0 <= camera->orientation.x && camera->orientation.x <= 1)
-		|| !(0 <= camera->orientation.y && camera->orientation.y <= 1)
-		|| !(0 <= camera->orientation.z && camera->orientation.z <= 1))
+		|| !(-1 <= camera->orientation.x && camera->orientation.x <= 1)
+		|| !(-1 <= camera->orientation.y && camera->orientation.y <= 1)
+		|| !(-1 <= camera->orientation.z && camera->orientation.z <= 1))
 		gfree_exit(1, "Error\nFailed to parse camera");
 }
 
