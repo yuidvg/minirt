@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/15 12:21:19 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/15 15:00:42 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,16 @@ t_ray	get_intersection_plane(t_ *data)
 	t_ray		*camera;
 	double		t;
 	t_vector3	s;
+	t_vector3	n;
+	t_vector3	d;
 
 	plane = data->this;
 	camera = data->camera_ray;
+	n = plane->orientation;
+	d = camera->orientation;
 	s = subtract_vectors(camera->position, plane->position);
-	t = -(inner_product_vectors(s, plane->orientation)
-			/ inner_product_vectors(camera->orientation, plane->orientation));
+	t = -(inner_product_vectors(s, n)
+			/ inner_product_vectors(d, n));
 	if (t > 0
 		&& inner_product_vectors(camera->orientation, plane->orientation) < 0)
 	{
@@ -33,14 +37,12 @@ t_ray	get_intersection_plane(t_ *data)
 	}
 	else if (t > 0)
 	{
-		// printf("aru2");
 		return ((t_ray){add_vectors(add_vectors(s,
 					scale_vector(camera->orientation, t)), plane->position),
 			scale_vector(plane->orientation, -1)});
 	}
 	else
 	{
-		// printf("nai");
 		return ((t_ray){.position = {0, 0, 0}, .orientation = {0, 0, 0}});
 	}
 }

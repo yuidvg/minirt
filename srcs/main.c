@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/15 12:11:10 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:34:47 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,11 +141,18 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	double		diffuse;
 	t_color		tmp;
 
+	diffuse = 0;
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
-	light_vector = get_light_vector(scene, intersection);
-	diffuse = inner_product_vectors(intersection.orientation, light_vector);
-	diffuse = clamp(diffuse, 0.0, 1.0);
-	tmp = calculate_shade_color(scene, diffuse);
+	if (intersection.position.x == 0 && intersection.position.y == 0
+		&& intersection.position.z == 0)
+		tmp = (t_color){0, 0, 0};
+	else
+	{
+		light_vector = get_light_vector(scene, intersection);
+		diffuse = inner_product_vectors(intersection.orientation, light_vector);
+		diffuse = clamp(diffuse, 0.0, 1.0);
+		tmp = calculate_shade_color(scene, diffuse);
+	}
 	return (tmp);
 }
 
