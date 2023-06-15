@@ -45,12 +45,12 @@ t_color	calculate_shade_color(t_scene *scene, double diffuse)
 // 	double		diffuse_intensity;
 
 // 	intersection_point = (t_vector3){
-// 		scene->camera.position.x + ray_direction.x * t,
-// 		scene->camera.position.y + ray_direction.y * t,
-// 		scene->camera.position.z + ray_direction.z * t};
+// 		scene->camera.pos.x + ray_direction.x * t,
+// 		scene->camera.pos.y + ray_direction.y * t,
+// 		scene->camera.pos.z + ray_direction.z * t};
 // 	normal_vector = normalize(subtract_vectors(intersection_point,
-// 				scene->objects->position));
-// 	light_vector = normalize(subtract_vectors(scene->light.position,
+// 				scene->objects->pos));
+// 	light_vector = normalize(subtract_vectors(scene->light.pos,
 // 				intersection_point));
 // 	diffuse_intensity = inner_product(normal_vector, light_vector);
 // 	diffuse_intensity = clamp(diffuse_intensity, 0.0, 1.0);
@@ -75,12 +75,12 @@ t_color	calculate_shade_color(t_scene *scene, double diffuse)
 
 // 	ray_direction = calculate_ray_direction(x, y);
 // 	discriminant = calculate_discriminant(ray_direction,
-// 			scene->camera.position, scene->objects->position,
+// 			scene->camera.pos, scene->objects->pos,
 // 			scene->objects->diameter);
 // 	a = inner_product(ray_direction, ray_direction);
 // 	b = 2 * inner_product(ray_direction,
-// 			subtract_vectors(scene->camera.position,
-// 				(scene->objects)->position));
+// 			subtract_vectors(scene->camera.pos,
+// 				(scene->objects)->pos));
 // 	if (discriminant >= 0)
 // 	{
 // 		t = (-b - sqrt(discriminant)) / (2 * a);

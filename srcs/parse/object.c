@@ -20,7 +20,7 @@ static int	parse_sphere(char *line, t_object *object)
 	split = ft_split(line, ' ');
 	if (!split
 		|| !split[0] || !split[1] || !split[2] || split[3]
-		|| parse_vector3(split[0], &object->position)
+		|| parse_vector3(split[0], &object->pos)
 		|| set_atod(split[1], &object->diameter)
 		|| parse_color(split[2], &object->color)
 		|| !(0 <= object->diameter))
@@ -36,11 +36,11 @@ static int	parse_plane(char *line, t_object *object)
 	split = ft_split(line, ' ');
 	if (!split
 		|| !split[0] || !split[1] || !split[2] || split[3]
-		|| parse_vector3(split[0], &object->position)
-		|| parse_vector3(split[1], &object->orientation)
-		|| !(-1 <= object->orientation.x && object->orientation.x <= 1)
-		|| !(-1 <= object->orientation.y && object->orientation.y <= 1)
-		|| !(-1 <= object->orientation.z && object->orientation.z <= 1)
+		|| parse_vector3(split[0], &object->pos)
+		|| parse_vector3(split[1], &object->dir)
+		|| !(-1 <= object->dir.x && object->dir.x <= 1)
+		|| !(-1 <= object->dir.y && object->dir.y <= 1)
+		|| !(-1 <= object->dir.z && object->dir.z <= 1)
 		|| parse_color(split[2], &object->color))
 		return (1);
 	object->get_intersection = get_intersection_plane;
@@ -55,11 +55,11 @@ static int	parse_cylinder(char *line, t_object *object)
 	if (!split
 		|| !split[0] || !split[1] || !split[2] || !split[3] || !split[4]
 		|| split[5]
-		|| parse_vector3(split[0], &object->position)
-		|| parse_vector3(split[1], &object->orientation)
-		|| !(-1 <= object->orientation.x && object->orientation.x <= 1)
-		|| !(-1 <= object->orientation.y && object->orientation.y <= 1)
-		|| !(-1 <= object->orientation.z && object->orientation.z <= 1)
+		|| parse_vector3(split[0], &object->pos)
+		|| parse_vector3(split[1], &object->dir)
+		|| !(-1 <= object->dir.x && object->dir.x <= 1)
+		|| !(-1 <= object->dir.y && object->dir.y <= 1)
+		|| !(-1 <= object->dir.z && object->dir.z <= 1)
 		|| set_atod(split[2], &object->diameter)
 		|| set_atod(split[3], &object->height)
 		|| parse_color(split[4], &object->color)

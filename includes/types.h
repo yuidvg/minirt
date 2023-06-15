@@ -41,8 +41,8 @@ typedef struct s_color
 
 typedef struct t_ray
 {
-	t_vector3	position;
-	t_vector3	orientation;
+	t_vector3	pos;
+	t_vector3	dir;
 }	t_ray;
 
 typedef struct s_image
@@ -69,14 +69,14 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	t_vector3	position;
-	t_vector3	orientation;
+	t_vector3	pos;
+	t_vector3	dir;
 	int			fov;
 }	t_camera;
 
 typedef struct s_light
 {
-	t_vector3	position;
+	t_vector3	pos;
 	double		blightness;
 	t_color		color;
 }	t_light;
@@ -92,8 +92,8 @@ typedef struct s_
 typedef struct s_object
 {
 	t_color				color;
-	t_vector3			position;
-	t_vector3			orientation;
+	t_vector3			pos;
+	t_vector3			dir;
 	double				diameter;
 	double				height;
 	t_ray				(*get_intersection)(t_ *);

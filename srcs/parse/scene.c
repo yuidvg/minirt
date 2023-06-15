@@ -30,13 +30,13 @@ static void	parse_camera(char *line, t_camera *camera)
 
 	split = ft_split(line, ' ');
 	if (!split || !split[0] || !split[1] || !split[2] || split[3]
-		|| parse_vector3(split[0], &camera->position)
-		|| parse_vector3(split[1], &camera->orientation)
+		|| parse_vector3(split[0], &camera->pos)
+		|| parse_vector3(split[1], &camera->dir)
 		|| set_atoi(split[2], &camera->fov)
 		|| !(0 <= camera->fov && camera->fov <= 180)
-		|| !(-1 <= camera->orientation.x && camera->orientation.x <= 1)
-		|| !(-1 <= camera->orientation.y && camera->orientation.y <= 1)
-		|| !(-1 <= camera->orientation.z && camera->orientation.z <= 1))
+		|| !(-1 <= camera->dir.x && camera->dir.x <= 1)
+		|| !(-1 <= camera->dir.y && camera->dir.y <= 1)
+		|| !(-1 <= camera->dir.z && camera->dir.z <= 1))
 		gfree_exit(1, "Error\nFailed to parse camera");
 }
 
@@ -46,7 +46,7 @@ static void	parse_light(char *line, t_light *light)
 
 	split = ft_split(line, ' ');
 	if (!split || !split[0] || !split[1] || !split[2] || split[3]
-		|| parse_vector3(split[0], &light->position)
+		|| parse_vector3(split[0], &light->pos)
 		|| set_atod(split[1], &light->blightness)
 		|| !(0 <= light->blightness && light->blightness <= 1)
 		|| parse_color(split[2], &light->color))

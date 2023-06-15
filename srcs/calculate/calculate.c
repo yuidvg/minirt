@@ -35,10 +35,10 @@ double	calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin,
 	double		c;
 	double		discriminant;
 
-	sphere_to_ray = subtract_vectors(ray_origin, object_position);
-	a = inner_product_vectors(ray_direction, ray_direction);
-	b = 2 * inner_product_vectors(ray_direction, sphere_to_ray);
-	c = inner_product_vectors(sphere_to_ray, sphere_to_ray)
+	sphere_to_ray = sub_vecs(ray_origin, object_position);
+	a = inpro_vec(ray_direction, ray_direction);
+	b = 2 * inpro_vec(ray_direction, sphere_to_ray);
+	c = inpro_vec(sphere_to_ray, sphere_to_ray)
 		- ((object_diameter * object_diameter) / 4.0);
 	discriminant = b * b - 4 * a * c;
 	return (discriminant);

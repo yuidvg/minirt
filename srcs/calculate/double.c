@@ -20,3 +20,10 @@ double	clamp(double value, double min, double max)
 		return (max);
 	return (value);
 }
+
+double	min(double a, double b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}

@@ -12,7 +12,7 @@
 
 #include "../../includes/calculate.h"
 
-t_vector3	scale_vector(t_vector3 v, double scalar)
+t_vector3	scl_vec(t_vector3 v, double scalar)
 {
 	t_vector3	result;
 
@@ -22,7 +22,7 @@ t_vector3	scale_vector(t_vector3 v, double scalar)
 	return (result);
 }
 
-double	magnitude_vector(t_vector3 vector)
+double	magn_vec(t_vector3 vector)
 {
 	return (sqrt(vector.x * vector.x
 			+ vector.y * vector.y

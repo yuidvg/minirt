@@ -22,17 +22,18 @@ t_ray		get_intersection_sphere(t_ *data);
 t_ray		get_intersection_cylinder(t_ *data);
 
 // Vector
-t_vector3	scale_vector(t_vector3 v, double scalar);
-double		magnitude_vector(t_vector3 vector);
+t_vector3	scl_vec(t_vector3 v, double scalar);
+double		magn_vec(t_vector3 vector);
 t_vector3	normalize_vector(t_vector3 v);
 
 //Vectors
-t_vector3	add_vectors(t_vector3 v1, t_vector3 v2);
-t_vector3	subtract_vectors(t_vector3 v1, t_vector3 v2);
-double		inner_product_vectors(t_vector3 v1, t_vector3 v2);
+t_vector3	add_vecs(t_vector3 v1, t_vector3 v2);
+t_vector3	sub_vecs(t_vector3 v1, t_vector3 v2);
+double		inpro_vec(t_vector3 v1, t_vector3 v2);
 
-// Scalar
+// double
 double		clamp(double value, double min, double max);
+double		min(double a, double b);
 // int			set_atod(char *str, double *num);
 
 // Calculation

@@ -113,8 +113,8 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 	while (object)
 	{
 		intersection = object->get_intersection(&(t_){object, camera_ray});
-		distance = magnitude_vector(subtract_vectors(intersection.position,
-					camera_ray->position));
+		distance = magn_vec(sub_vecs(intersection.pos,
+					camera_ray->pos));
 		if (distance < nearest_distance)
 		{
 			nearest_distance = distance;
@@ -129,8 +129,8 @@ t_vector3	get_light_vector(t_scene *scene, t_ray intersection)
 {
 	t_vector3	light_vector;
 
-	light_vector = normalize_vector(subtract_vectors(scene->light.position,
-				intersection.position));
+	light_vector = normalize_vector(sub_vecs(scene->light.pos,
+				intersection.pos));
 	return (light_vector);
 }
 
@@ -142,8 +142,12 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	t_color		tmp;
 
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
+	if (magn_vec(intersection.dir) == 0)
+		return ((t_color){0, 0, 0});
+	else
+		return ((t_color){255, 255, 255});
 	light_vector = get_light_vector(scene, intersection);
-	diffuse = inner_product_vectors(intersection.orientation, light_vector);
+	diffuse = inpro_vec(intersection.dir, light_vector);
 	diffuse = clamp(diffuse, 0.0, 1.0);
 	tmp = calculate_shade_color(scene, diffuse);
 	return (tmp);
@@ -153,11 +157,11 @@ t_ray	get_camera_ray(int x, int y, t_camera *camera)
 {
 	t_ray	camera_ray;
 
-	camera_ray.position = camera->position;
-	camera_ray.orientation.x = (x - WIDTH / 2) / (WIDTH / 2.0);
-	camera_ray.orientation.y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
-	camera_ray.orientation.z = WIDTH / (2.0 * tan(camera->fov / 2.0));
-	camera_ray.orientation = normalize_vector(camera_ray.orientation);
+	camera_ray.pos = camera->pos;
+	camera_ray.dir.x = (x - WIDTH / 2) / (WIDTH / 2.0);
+	camera_ray.dir.y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
+	camera_ray.dir.z = WIDTH / (2.0 * tan(camera->fov / 2.0));
+	camera_ray.dir = normalize_vector(camera_ray.dir);
 	return (camera_ray);
 }
 

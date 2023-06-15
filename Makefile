@@ -37,17 +37,8 @@ CFLAGS_DEBUG = -g -Wall -Werror -Wextra -I includes/
 LIBSFLAGS_DEBUG = -lm -L$(LIBFTDIR) -lft_debug -I$(MLXINCLUDE) -L$(MLXDIR) -lmlx -framework OpenGL -framework AppKit
 OBJS_DEBUG = $(SRCS:%.c=$(OBJSDIR_DEBUG)%.o)
 LIBFTNAME_DEBUG = $(LIBFTDIR)libft_debug.a
-$(LIBFTNAME_DEBUG):
-	make -C $(LIBFTDIR) debug
-debug: $(NAME_DEBUG)
-$(NAME_DEBUG): $(OBJS_DEBUG) $(LIBFTNAME_DEBUG)
-	$(CC) $(CFLAGS_DEBUG) $(LIBSFLAGS_DEBUG) $^ -o $@
-$(OBJSDIR_DEBUG)%.o: $(SRCSDIR)%.c
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 all: $(NAME)
-
 $(LIBFTNAME):
 	make -C $(LIBFTDIR)
 
@@ -66,5 +57,14 @@ fclean: clean
 	rm -f $(NAME) $(NAME_DEBUG)
 
 re: fclean all
+
+$(LIBFTNAME_DEBUG):
+	make -C $(LIBFTDIR) debug
+debug: $(NAME_DEBUG)
+$(NAME_DEBUG): $(OBJS_DEBUG) $(LIBFTNAME_DEBUG)
+	$(CC) $(CFLAGS_DEBUG) $(LIBSFLAGS_DEBUG) $^ -o $@
+$(OBJSDIR_DEBUG)%.o: $(SRCSDIR)%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS_DEBUG) -c $< -o $@
 
 .PHONY: fclean all re clean debug

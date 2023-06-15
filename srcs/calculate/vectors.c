@@ -12,7 +12,7 @@
 
 #include "../../includes/calculate.h"
 
-t_vector3	add_vectors(t_vector3 v1, t_vector3 v2)
+t_vector3	add_vecs(t_vector3 v1, t_vector3 v2)
 {
 	t_vector3	result;
 
@@ -22,7 +22,7 @@ t_vector3	add_vectors(t_vector3 v1, t_vector3 v2)
 	return (result);
 }
 
-t_vector3	subtract_vectors(t_vector3 v1, t_vector3 v2)
+t_vector3	sub_vecs(t_vector3 v1, t_vector3 v2)
 {
 	t_vector3	result;
 
@@ -32,7 +32,7 @@ t_vector3	subtract_vectors(t_vector3 v1, t_vector3 v2)
 	return (result);
 }
 
-double	inner_product_vectors(t_vector3 v1, t_vector3 v2)
+double	inpro_vec(t_vector3 v1, t_vector3 v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
