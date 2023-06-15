@@ -6,21 +6,11 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/15 16:53:30 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/15 16:56:10 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/calculate.h"
-
-// t_color	extract_color_components(t_color source_color)
-// {
-// 	t_color	extracted_color;
-
-// 	extracted_color.r = (source_color.r >> 16) & 0xFF;
-// 	extracted_color.g = (source_color.g >> 8) & 0xFF;
-// 	extracted_color.b = source_color.b & 0xFF;
-// 	return (extracted_color);
-// }
 
 //return rgb color
 t_color	calculate_shade_color(t_scene *scene, double diffuse)
