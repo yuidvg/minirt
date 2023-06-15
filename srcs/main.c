@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/13 18:09:37 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/15 12:11:10 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@
 // 	double		t;
 // 	double		diffuse;
 
-// 	ray_direction = calculate_ray_direction(x, y);
-// 	denominator = inner_product_vectors(ray_direction, scene->objects->orientation);
+// 	　s = ray_direction = calculate_ray_direction(x, y);
+// 	t = denominator = inner_product_vectors(ray_direction, scene->objects->orientation);
 // 	if (denominator != 0)
 // 	{
 // 		t = inner_product_vectors(ray_direction, scene->objects->orientation) / denominator;
@@ -138,7 +138,7 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 {
 	t_ray		intersection;
 	t_vector3	light_vector;
-	int			diffuse;
+	double		diffuse;
 	t_color		tmp;
 
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
