@@ -53,8 +53,7 @@ t_ray	get_intersection_sphere(t_ *data)
 			- sphere->diameter * sphere->diameter);
 	t = (-2 * inpro_vec(camera->dir, sub_vecs(camera->pos, sphere->pos))
 			- sqrt(d)) / (2 * magn_vec(camera->dir) * magn_vec(camera->dir));
-
-	if (d >= 0 || t >= 0)
+	if (d >= 0 && t >= 0)
 		return ((t_ray){
 			add_vecs(camera->pos, scl_vec(camera->dir, t)),
 			sub_vecs(add_vecs(camera->pos, scl_vec(camera->dir, t)),
