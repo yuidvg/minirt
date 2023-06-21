@@ -42,7 +42,7 @@ static t_list	*lstnew(t_list *content)
 {
 	t_list	*new_node;
 
-	new_node = ft_calloc(1, sizeof(t_list));
+	new_node = malloc(sizeof(t_list));
 	if (!new_node)
 		gfree_exit(-1, "Error: malloc failed\n");
 	new_node->content = content;
@@ -60,7 +60,7 @@ void	*galloc(size_t size)
 		gfree(garbages);
 		return (NULL);
 	}
-	new_mem = ft_calloc(1, size);
+	new_mem = malloc(size);
 	if (!new_mem)
 		gfree_exit(-1, "FATAL: malloc failed\n");
 	new_node = lstnew(new_mem);

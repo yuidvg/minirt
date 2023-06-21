@@ -73,55 +73,45 @@ static int	within_height(t_object *cylinder, t_ray *camera_ray, double t)
 		+ (cylinder->height / 2) * (cylinder->height / 2));
 }
 
+void	get_dt(t_object *cylinder, t_ray *camera_ray, double *d, double t[])
+{
+	double		a;
+	double		b;
+	double		c;
+
+	a = 3 * dot_vecs(camera_ray->dir, camera_ray->dir);
+	b = 6 * dot_vecs(camera_ray->dir, camera_ray->pos)
+		- 7 * dot_vecs(camera_ray->dir, cylinder->pos)
+		+ 2 * dot_vecs(camera_ray->dir, cylinder->dir);
+	c = 4 * dot_vecs(camera_ray->pos, camera_ray->pos)
+		+ 4 * dot_vecs(cylinder->pos, cylinder->pos)
+		- 8 * dot_vecs(cylinder->pos, camera_ray->pos);
+	*d = b * b - a * c;
+	if (*d >= 0)
+	{
+		t[0] = (-b - sqrt(*d)) / a;
+		t[1] = (-b + sqrt(*d)) / a;
+	}
+}
+
 t_ray	get_intersection_cylinder(t_ *data)
 {
 	t_object	*cylinder;
 	t_ray		*camera_ray;
-	double		a;
-	double		b;
-	double		c;
 	double		d;
-	double		t;
+	double		t[2];
 	t_vector3	position;
 
 	cylinder = data->this;
 	camera_ray = data->camera_ray;
-	a = dot_vecs(camera_ray->dir, camera_ray->dir)
-		- dot_vecs(camera_ray->dir, cylinder->dir)
-		* dot_vecs(camera_ray->dir, cylinder->dir)
-		/ dot_vecs(cylinder->dir, cylinder->dir);
-	b = dot_vecs(sub_vecs(cylinder->pos, camera_ray->pos), cylinder->dir)
-		- dot_vecs(sub_vecs(cylinder->pos, camera_ray->pos), cylinder->dir)
-		* dot_vecs(cylinder->dir, camera_ray->dir)
-		/ dot_vecs(cylinder->dir, cylinder->dir);
-	c = dot_vecs(sub_vecs(cylinder->pos, camera_ray->pos),
-			sub_vecs(cylinder->pos, camera_ray->pos))
-		- dot_vecs(sub_vecs(cylinder->pos, camera_ray->pos), cylinder->dir)
-		* dot_vecs(sub_vecs(cylinder->pos, camera_ray->pos), cylinder->dir)
-		/ dot_vecs(cylinder->dir, cylinder->dir)
-		- cylinder->rad * cylinder->rad;
-	d = b * b - a * c;
-	t = (-b - sqrt(d)) / a;
-	if (t > 0 && d >= 0 && within_height(cylinder, camera_ray, t))
-	{
-		position = add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t));
-		return ((t_ray){.pos = position,
-			.dir = norm_vec(sub_vecs(sub_vecs(position, cylinder->pos),
-					scl_vec(cylinder->dir,
-						dot_vecs(sub_vecs(position, cylinder->pos),
-							cylinder->dir))))});
-	}
-	else if (t > 0 && d >= 0
-		&& within_height(cylinder, camera_ray, t + sqrt(d) / a * 2))
-	{
-		position = add_vecs(camera_ray->pos, scl_vec(camera_ray->dir,
-					t + sqrt(d) / a * 2));
-		return ((t_ray){.pos = position,
-			.dir = norm_vec(sub_vecs(sub_vecs(position, cylinder->pos),
-					scl_vec(cylinder->dir,
-						dot_vecs(sub_vecs(position, cylinder->pos),
-							cylinder->dir))))});
-	}
+	get_dt(cylinder, camera_ray, &d, t);
+	if (d < 0)
+		return ((t_ray){.pos = {0, 0, 0}, .dir = {0, 0, 0}});
+	if (t[0] >= 0 && within_height(cylinder, camera_ray, t[0]))
+		position = add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t[0]));
+	else if (t[1] >= 0 && within_height(cylinder, camera_ray, t[1]))
+		position = add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t[1]));
 	else
 		return ((t_ray){.pos = {0}, .dir = {0}});
+	return ((t_ray){position, norm_vec(sub_vecs(position, cylinder->pos))});
 }
