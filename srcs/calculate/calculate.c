@@ -22,7 +22,7 @@ t_vector3	calculate_ray_direction(int x, int y)
 	ray_dir_x = (x - WIDTH / 2) / (WIDTH / 2.0);
 	ray_dir_y = -(y - HEIGHT / 2) / (HEIGHT / 2.0);
 	ray_dir_z = 1.0;
-	ray_direction = normalize_vector((t_vector3){ray_dir_x, ray_dir_y, ray_dir_z});
+	ray_direction = norm_vec((t_vector3){ray_dir_x, ray_dir_y, ray_dir_z});
 	return (ray_direction);
 }
 
@@ -36,9 +36,9 @@ double	calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin,
 	double		discriminant;
 
 	sphere_to_ray = sub_vecs(ray_origin, object_position);
-	a = dot_vec(ray_direction, ray_direction);
-	b = 2 * dot_vec(ray_direction, sphere_to_ray);
-	c = dot_vec(sphere_to_ray, sphere_to_ray)
+	a = dot_vecs(ray_direction, ray_direction);
+	b = 2 * dot_vecs(ray_direction, sphere_to_ray);
+	c = dot_vecs(sphere_to_ray, sphere_to_ray)
 		- ((object_diameter * object_diameter) / 4.0);
 	discriminant = b * b - 4 * a * c;
 	return (discriminant);

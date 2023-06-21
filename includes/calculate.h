@@ -24,12 +24,12 @@ t_ray		get_intersection_cylinder(t_ *data);
 // Vector
 t_vector3	scl_vec(t_vector3 v, double scalar);
 double		magn_vec(t_vector3 vector);
-t_vector3	normalize_vector(t_vector3 v);
+t_vector3	norm_vec(t_vector3 v);
 
 //Vectors
 t_vector3	add_vecs(t_vector3 v1, t_vector3 v2);
 t_vector3	sub_vecs(t_vector3 v1, t_vector3 v2);
-double		dot_vec(t_vector3 v1, t_vector3 v2);
+double		dot_vecs(t_vector3 v1, t_vector3 v2);
 
 // double
 double		clamp(double value, double min, double max);

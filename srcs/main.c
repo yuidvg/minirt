@@ -129,7 +129,7 @@ t_vector3	get_light_vector(t_scene *scene, t_ray intersection)
 {
 	t_vector3	light_vector;
 
-	light_vector = normalize_vector(sub_vecs(scene->light.pos,
+	light_vector = norm_vec(sub_vecs(scene->light.pos,
 				intersection.pos));
 	return (light_vector);
 }
@@ -148,7 +148,7 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	else
 		return ((t_color){255, 255, 255});
 	light_vector = get_light_vector(scene, intersection);
-	diffuse = dot_vec(intersection.dir, light_vector);
+	diffuse = dot_vecs(intersection.dir, light_vector);
 	diffuse = clamp(diffuse, 0.0, 1.0);
 	tmp = calculate_shade_color(scene, diffuse);
 	return (tmp);
@@ -162,7 +162,7 @@ t_ray	get_camera_ray(int x, int y, t_camera *camera)
 	camera_ray.dir.x = x - WIDTH / 2;
 	camera_ray.dir.y = y - HEIGHT / 2;
 	camera_ray.dir.z = -(WIDTH / (2.0 * tan(camera->fov / 2.0)));
-	camera_ray.dir = normalize_vector(camera_ray.dir);
+	camera_ray.dir = norm_vec(camera_ray.dir);
 	return (camera_ray);
 }
 

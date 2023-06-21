@@ -21,10 +21,11 @@ static int	parse_sphere(char *line, t_object *object)
 	if (!split
 		|| !split[0] || !split[1] || !split[2] || split[3]
 		|| parse_vector3(split[0], &object->pos)
-		|| set_atod(split[1], &object->diameter)
+		|| set_atod(split[1], &object->rad)
 		|| parse_color(split[2], &object->color)
-		|| !(0 <= object->diameter))
+		|| !(0 <= object->rad))
 		return (1);
+	object->rad /= 2;
 	object->get_intersection = get_intersection_sphere;
 	return (0);
 }
@@ -60,12 +61,13 @@ static int	parse_cylinder(char *line, t_object *object)
 		|| !(-1 <= object->dir.x && object->dir.x <= 1)
 		|| !(-1 <= object->dir.y && object->dir.y <= 1)
 		|| !(-1 <= object->dir.z && object->dir.z <= 1)
-		|| set_atod(split[2], &object->diameter)
+		|| set_atod(split[2], &object->rad)
 		|| set_atod(split[3], &object->height)
 		|| parse_color(split[4], &object->color)
-		|| !(0 <= object->diameter)
+		|| !(0 <= object->rad)
 		|| !(0 <= object->height))
 		return (1);
+	object->rad /= 2;
 	object->get_intersection = get_intersection_cylinder;
 	return (0);
 }

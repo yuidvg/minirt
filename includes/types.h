@@ -94,7 +94,7 @@ typedef struct s_object
 	t_color				color;
 	t_vector3			pos;
 	t_vector3			dir;
-	double				diameter;
+	double				rad;
 	double				height;
 	t_ray				(*get_intersection)(t_ *);
 	struct s_object		*next;
