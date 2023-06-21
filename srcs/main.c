@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/15 17:24:54 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/21 15:04:39 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ t_vector3	get_light_vector(t_scene *scene, t_ray intersection)
 {
 	t_vector3	light_vector;
 
-	light_vector = normalize_vector(sub_vecs(scene->light.pos,
-				intersection.pos));
+	light_vector = normalize_vector(sub_vecs(intersection.pos,
+				scene->light.pos));
 	return (light_vector);
 }
 
@@ -144,12 +144,10 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	diffuse = 0;
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
 	if (magn_vec(intersection.dir) == 0)
-		return ((t_color){0, 0, 0});
-	else
-		return ((t_color){255, 255, 255});
+		return ((t_color){0,0,0});
 	light_vector = get_light_vector(scene, intersection);
-	diffuse = inpro_vec(intersection.dir, light_vector);
-	diffuse = clamp(diffuse, 0.0, 1.0);
+	diffuse = inpro_vec(light_vector, intersection.dir);
+	diffuse = clamp(diffuse, 0.0, 0.7);
 	tmp = calculate_shade_color(scene, diffuse);
 	return (tmp);
 }
