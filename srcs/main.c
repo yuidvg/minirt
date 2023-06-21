@@ -148,7 +148,7 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	else
 		return ((t_color){255, 255, 255});
 	light_vector = get_light_vector(scene, intersection);
-	diffuse = inpro_vec(intersection.dir, light_vector);
+	diffuse = dot_vec(intersection.dir, light_vector);
 	diffuse = clamp(diffuse, 0.0, 1.0);
 	tmp = calculate_shade_color(scene, diffuse);
 	return (tmp);

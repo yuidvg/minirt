@@ -29,7 +29,7 @@ t_vector3	normalize_vector(t_vector3 v);
 //Vectors
 t_vector3	add_vecs(t_vector3 v1, t_vector3 v2);
 t_vector3	sub_vecs(t_vector3 v1, t_vector3 v2);
-double		inpro_vec(t_vector3 v1, t_vector3 v2);
+double		dot_vec(t_vector3 v1, t_vector3 v2);
 
 // double
 double		clamp(double value, double min, double max);
