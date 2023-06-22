@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/21 17:15:03 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/22 16:48:06 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
 		}
 		object = object->next;
 	}
+	printf("near = %f\n", nearest_distance);
 	return (nearest_intersection);
 }
 
