@@ -29,7 +29,7 @@ double	magn_vec(t_vector3 vector)
 			+ vector.z * vector.z));
 }
 
-t_vector3	normalize_vector(t_vector3 v)
+t_vector3	norm_vec(t_vector3 v)
 {
 	double		length;
 	t_vector3	result;

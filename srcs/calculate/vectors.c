@@ -32,7 +32,7 @@ t_vector3	sub_vecs(t_vector3 v1, t_vector3 v2)
 	return (result);
 }
 
-double	inpro_vec(t_vector3 v1, t_vector3 v2)
+double	dot_vecs(t_vector3 v1, t_vector3 v2)
 {
 	return (v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }

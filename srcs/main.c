@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/21 16:37:21 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:15:03 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ t_vector3	get_light_vector(t_scene *scene, t_ray intersection)
 {
 	t_vector3	light_vector;
 
-	light_vector = normalize_vector(sub_vecs(scene->light.pos,
+	light_vector = norm_vec(sub_vecs(scene->light.pos,
 				intersection.pos));
 	return (light_vector);
 }
@@ -146,8 +146,8 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	if (magn_vec(intersection.dir) == 0)
 		return ((t_color){100, 149, 237});
 	light_vector = get_light_vector(scene, intersection);
-	diffuse = inpro_vec(light_vector, normalize_vector(intersection.dir));
-	diffuse = clamp(diffuse, 0.0, 0.8);
+	diffuse = dot_vecs(intersection.dir, light_vector);
+	diffuse = clamp(diffuse, 0.0, 1.0);
 	tmp = calculate_shade_color(scene, diffuse);
 	return (tmp);
 }
@@ -160,7 +160,7 @@ t_ray	get_camera_ray(int x, int y, t_camera *camera)
 	camera_ray.dir.x = x - WIDTH / 2;
 	camera_ray.dir.y = y - HEIGHT / 2;
 	camera_ray.dir.z = -(WIDTH / (2.0 * tan(camera->fov / 2.0)));
-	camera_ray.dir = normalize_vector(camera_ray.dir);
+	camera_ray.dir = norm_vec(camera_ray.dir);
 	return (camera_ray);
 }
 
