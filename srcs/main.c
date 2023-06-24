@@ -6,7 +6,7 @@
 /*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/23 20:30:42 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/24 12:10:05 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,22 @@ t_color	type_check(t_object *object, t_ray intersection)
 		return (object->color);
 }
 
-t_ray get_intersection_to_light(t_vector3 intersection, t_vector3 light_position)
+t_ray	get_shadow_ray(t_vector3 intersection,
+			t_vector3 light_position)
 {
-	t_ray intersection_to_light;
+	t_ray	intersection_to_light;
+
 	intersection_to_light.pos = intersection;
-	intersection_to_light.dir = norm_vec(sub_vecs(light_position, intersection));
+	intersection_to_light.dir = norm_vec(sub_vecs(light_position,
+				intersection));
 	return (intersection_to_light);
 }
 
 t_color	get_color(t_scene *scene, t_ray camera_ray)
 {
 	t_ray		intersection;
+	t_ray		shadow_ray;
 	t_ray		intersection_other_object;
-	t_ray		intersection_tmp;
 	t_vector3	light_vector;
 	double		diffuse;
 	t_color		tmp;
@@ -84,9 +87,10 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
 	if (magn_vec(intersection.dir) == 0)
 		return ((t_color){100, 149, 237});
-	intersection_tmp = get_intersection_to_light(intersection.pos, scene->light.pos);
+	shadow_ray = get_shadow_ray(intersection.pos, \
+				scene->light.pos);
 	intersection_other_object = get_1st_intersection(scene->objects,
-			&intersection_tmp);
+			&shadow_ray);
 	tmp = type_check(scene->objects, intersection);
 	if (magn_vec(intersection_other_object.dir) == 0)
 	{
