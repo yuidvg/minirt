@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/15 15:40:09 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:36:14 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # define HEIGHT 600
 
 # define WINDOW_TITLE "miniRT"
+# define DIFFUSE_RATIO 0.8
+# define SPECULAR_RATIO 0.2
 
 typedef enum e_object_type
 {
@@ -44,12 +46,6 @@ typedef struct s_ray
 	t_vector3	pos;
 	t_vector3	dir;
 }	t_ray;
-
-typedef struct s_intersection
-{
-	t_ray	point;
-	t_color	color;
-}	t_intersection;
 
 typedef struct s_image
 {

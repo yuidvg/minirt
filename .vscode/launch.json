@@ -21,7 +21,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/minirt_debug",
             "args": [
-                "tests/test_scene_1.rt"
+                "tests/test_cy.rt"
             ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

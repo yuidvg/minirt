@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/26 17:55:17 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/26 20:37:45 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,39 +20,40 @@ int	convert_color_to_int(t_color color)
 	return (rgb);
 }
 
-t_intersection	get_1st_intersection(t_object *object, t_ray *camera_ray)
+t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray, t_color *color)
 {
-	t_ray	point;
-	t_ray	nearest_point;
-	t_color	color;
+	t_ray	intersection;
+	t_ray	nearest_intersection;
 	double	nearest_distance;
 	double	distance;
 
 	nearest_distance = INFINITY;
-	nearest_point = (t_ray){(t_vector3){0, 0, 0}, (t_vector3){0, 0, 0}};
+	nearest_intersection = (t_ray){(t_vector3){0, 0, 0}, (t_vector3){0, 0, 0}};
 	while (object)
 	{
-		point = object->get_inter_point(&(t_){object, camera_ray});
-		distance = magn_vec(sub_vecs(point.pos,
+		intersection = object->get_inter_point(&(t_){object, camera_ray});
+		distance = magn_vec(sub_vecs(intersection.pos,
 					camera_ray->pos));
 		if (distance < nearest_distance)
 		{
 			nearest_distance = distance;
-			nearest_point = point;
-			color = object->color;
+			nearest_intersection = intersection;
+			if (color)
+				*color = object->color;
 		}
 		object = object->next;
 	}
-	return ((t_intersection){nearest_point, color});
+	return (nearest_intersection);
 }
 
-t_vector3	get_light_vector(t_scene *scene, t_ray intersection)
+t_ray	get_ray_toward_light(t_scene *scene, t_ray intersection)
 {
-	t_vector3	light_vector;
+	t_ray	ray_toward_light;
 
-	light_vector = norm_vec(sub_vecs(scene->light.pos,
+	ray_toward_light.dir = norm_vec(sub_vecs(scene->light.pos,
 				intersection.pos));
-	return (light_vector);
+	ray_toward_light.pos = intersection.pos;
+	return (ray_toward_light);
 }
 
 t_ray	get_shadow_ray(t_vector3 intersection,
@@ -76,28 +77,36 @@ t_ray	*converttoray(t_vector3 position, t_vector3 direction)
 	return (ray);
 }
 
+double	get_diffused_light(t_scene *scene, t_ray *intersection, t_ray *ray_toward_light)
+{
+	t_ray		intersection_with_other_object;
+	double		diffused_light;
+
+	diffused_light = 0;
+
+	intersection_with_other_object
+		= get_1st_intersection(scene->objects, ray_toward_light, NULL);
+	if (magn_vec(intersection_with_other_object.dir) == 0)
+		diffused_light = dot_vecs(intersection->dir, ray_toward_light->dir)
+			* scene->light.blightness * DIFFUSE_RATIO;
+	return (diffused_light);
+}
+
 t_color	get_color(t_scene *scene, t_ray camera_ray)
 {
-	t_intersection	intersection;
-	t_intersection	intersection_other_object;
-	t_vector3		light_vector;
-	t_ray			shadow_ray;
-	double			diffuse;
+	t_ray		intersection;
+	t_color		object_color;
+	t_ray		ray_toward_light;
+	double		diffused_light;
 
-	diffuse = 0;
-	intersection = get_1st_intersection(scene->objects, &camera_ray);
-	if (magn_vec(intersection.point.dir) == 0)
+	diffused_light = 0;
+	intersection = get_1st_intersection(scene->objects, &camera_ray, &object_color);
+	if (magn_vec(intersection.dir) != 0)
 		return ((t_color){0, 0, 0});
-	light_vector = get_light_vector(scene, intersection.point);
-	shadow_ray = get_shadow_ray(intersection.point.pos, light_vector);
-	intersection_other_object = get_1st_intersection(scene->objects,
-			converttoray(intersection.point.pos, light_vector));
-	if (magn_vec(intersection_other_object.point.dir) == 0)
-	{
-		diffuse = dot_vecs(intersection.point.dir, light_vector);
-		diffuse = clamp(diffuse, 0.0, 1.0);
-	}
-	return (calculate_shade_color(scene, diffuse));
+	diffused_light = get_diffused_light(scene, &intersection, &ray_toward_light);
+	return (add_colors(
+		scale_color(scene->ambient.color, scene->ambient.ratio),
+		scale_color(object_color, diffused_light)));
 }
 
 t_ray	get_camera_ray(int x, int y, t_camera *camera)
