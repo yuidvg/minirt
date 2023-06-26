@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/24 12:10:05 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/26 11:41:12 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 		diffuse = dot_vecs(intersection.dir, light_vector);
 		diffuse = clamp(diffuse, 0.0, 1.0);
 	}
-	return (calculate_shade_color(scene, diffuse, tmp));
+	return (calculate_shade_color(scene, diffuse));
 }
 
 t_ray	get_camera_ray(int x, int y, t_camera *camera)
