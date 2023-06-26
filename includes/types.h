@@ -45,12 +45,6 @@ typedef struct s_ray
 	t_vector3	dir;
 }	t_ray;
 
-typedef struct s_intersection
-{
-	t_ray	point;
-	t_color	color;
-}	t_intersection;
-
 typedef struct s_image
 {
 	void	*ptr;
