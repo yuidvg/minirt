@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/15 16:56:10 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/21 17:16:09 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,17 @@
 t_color	calculate_shade_color(t_scene *scene, double diffuse)
 {
 	t_color	extracted_color;
-	t_color	shade_color;
-	double	direct_intensity;
 
 	extracted_color = scene->objects->color;
-	direct_intensity = diffuse + scene->ambient.ratio + scene->light.blightness;
-	shade_color.r = clamp((int)(direct_intensity * extracted_color.r), 0, 255);
-	shade_color.g = clamp((int)(direct_intensity * extracted_color.g), 0, 255);
-	shade_color.b = clamp((int)(direct_intensity * extracted_color.b), 0, 255);
-	return (shade_color);
+	extracted_color.r = clamp((int)((scene->ambient.ratio + diffuse) * \
+			extracted_color.r), 0, 255);
+	extracted_color.g = clamp((int)((scene->ambient.ratio + diffuse) * \
+			extracted_color.g), 0, 255);
+	extracted_color.b = clamp((int)((scene->ambient.ratio + diffuse) * \
+			extracted_color.b), 0, 255);
+	return (extracted_color);
 }
+
 
 // double	process_intersection(t_scene *scene, t_vector3 ray_direction, double t)
 // {
