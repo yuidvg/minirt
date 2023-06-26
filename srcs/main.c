@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/26 11:41:12 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/26 16:31:37 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	diffuse = 0;
 	intersection = get_1st_intersection(scene->objects, &camera_ray);
 	if (magn_vec(intersection.dir) == 0)
-		return ((t_color){100, 149, 237});
+		return ((t_color){0, 0, 0});
 	shadow_ray = get_shadow_ray(intersection.pos, \
 				scene->light.pos);
 	intersection_other_object = get_1st_intersection(scene->objects,
