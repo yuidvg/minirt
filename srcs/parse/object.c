@@ -26,7 +26,7 @@ static int	parse_sphere(char *line, t_object *object)
 		|| !(0 <= object->rad))
 		return (1);
 	object->rad /= 2;
-	object->get_intersection = get_intersection_sphere;
+	object->get_inter_point = get_intersection_sphere;
 	return (0);
 }
 
@@ -44,7 +44,7 @@ static int	parse_plane(char *line, t_object *object)
 		|| !(-1 <= object->dir.z && object->dir.z <= 1)
 		|| parse_color(split[2], &object->color))
 		return (1);
-	object->get_intersection = get_intersection_plane;
+	object->get_inter_point = get_intersection_plane;
 	return (0);
 }
 
@@ -68,7 +68,7 @@ static int	parse_cylinder(char *line, t_object *object)
 		|| !(0 <= object->height))
 		return (1);
 	object->rad /= 2;
-	object->get_intersection = get_intersection_cylinder;
+	object->get_inter_point = get_intersection_cylinder;
 	return (0);
 }
 

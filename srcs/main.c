@@ -20,29 +20,30 @@ int	convert_color_to_int(t_color color)
 	return (rgb);
 }
 
-t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray)
+t_intersection	get_1st_intersection(t_object *object, t_ray *camera_ray)
 {
-	t_ray	intersection;
-	t_ray	nearest_intersection;
+	t_ray	point;
+	t_ray	nearest_point;
+	t_color	color;
 	double	nearest_distance;
 	double	distance;
 
 	nearest_distance = INFINITY;
-	nearest_intersection = (t_ray){(t_vector3){0, 0, 0}, (t_vector3){0, 0, 0}};
+	nearest_point = (t_ray){(t_vector3){0, 0, 0}, (t_vector3){0, 0, 0}};
 	while (object)
 	{
-		intersection = object->get_intersection(&(t_){object, camera_ray});
-		distance = magn_vec(sub_vecs(intersection.pos,
+		point = object->get_inter_point(&(t_){object, camera_ray});
+		distance = magn_vec(sub_vecs(point.pos,
 					camera_ray->pos));
 		if (distance < nearest_distance)
 		{
 			nearest_distance = distance;
-			nearest_intersection = intersection;
-
+			nearest_point = point;
+			color = object->color;
 		}
 		object = object->next;
 	}
-	return (nearest_intersection);
+	return ((t_intersection){nearest_point, color});
 }
 
 t_vector3	get_light_vector(t_scene *scene, t_ray intersection)

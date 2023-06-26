@@ -39,11 +39,17 @@ typedef struct s_color
 	int		b;
 }	t_color;
 
-typedef struct t_ray
+typedef struct s_ray
 {
 	t_vector3	pos;
 	t_vector3	dir;
 }	t_ray;
+
+typedef struct s_intersection
+{
+	t_ray	point;
+	t_color	color;
+}	t_intersection;
 
 typedef struct s_image
 {
@@ -96,7 +102,7 @@ typedef struct s_object
 	t_vector3			dir;
 	double				rad;
 	double				height;
-	t_ray				(*get_intersection)(t_ *);
+	t_ray				(*get_inter_point)(t_ *);
 	struct s_object		*next;
 }	t_object;
 
