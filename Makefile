@@ -7,9 +7,9 @@ LIBFTDIR = libft/
 LIBFTNAME = $(LIBFTDIR)libft.a
 
 #Libraries
-LIBSFLAGS = -lm -L$(LIBFTDIR) -lft -I$(MLXINCLUDE) -L$(MLXDIR) -lmlx -framework OpenGL -framework AppKit
-MLXDIR = /usr/local/lib/
-MLXINCLUDE = /usr/local/include/
+LIBSFLAGS = -lm -L$(LIBFTDIR) -lft -I$(MLXINCLUDE) -L$(MLXDIR) -lmlx -L/usr/X11R6/lib -lX11 -lXext -lm -framework OpenGL -framework AppKit
+MLXDIR = ./minilibx-linux
+MLXINCLUDE = ./minilibx-linux
 
 #Mandatory
 NAME = minirt
