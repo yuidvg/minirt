@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   calculate.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/26 20:34:28 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/27 10:24:52 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_color scale_color(t_color color, double scale);
 
 // Sphere
 t_color		extract_color_components(t_color source_color);
-t_color		calculate_shade_color(t_scene *scene, double diffuse, t_color object_color);
+t_color		calculate_shade_color(t_scene *scene, double diffuse, t_color color);
 double		process_intersection(t_scene *scene,
 				t_vector3 ray_direction, double t);
 void		set_sphere_color(t_scene *scene, int x, int y, double diffuse);
