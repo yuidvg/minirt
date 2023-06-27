@@ -64,33 +64,41 @@ t_ray	get_intersection_sphere(t_ *data)
 
 static int	within_height(t_object *cylinder, t_ray *camera_ray, double t)
 {
-	return (dot_vecs(
-			sub_vecs(add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t)),
-				cylinder->pos),
-			sub_vecs(add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t)),
-				cylinder->pos))
+	double	intersection_from_cylinder_pos;
+
+	intersection_from_cylinder_pos = magn_vec(sub_vecs(
+				add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t)),
+				cylinder->pos));
+	if (intersection_from_cylinder_pos * intersection_from_cylinder_pos
 		<= cylinder->rad * cylinder->rad
-		+ (cylinder->height / 2) * (cylinder->height / 2));
+		+ (cylinder->height / 2) * (cylinder->height / 2))
+		return (1);
+	return (0);
 }
 
 void	get_dt(t_object *cylinder, t_ray *camera_ray, double *d, double t[])
 {
+	t_vector3	p;
+	t_vector3	q;
 	double		a;
 	double		b;
 	double		c;
 
-	a = 3 * dot_vecs(camera_ray->dir, camera_ray->dir);
-	b = 6 * dot_vecs(camera_ray->dir, camera_ray->pos)
-		- 7 * dot_vecs(camera_ray->dir, cylinder->pos)
-		+ 2 * dot_vecs(camera_ray->dir, cylinder->dir);
-	c = 4 * dot_vecs(camera_ray->pos, camera_ray->pos)
-		+ 4 * dot_vecs(cylinder->pos, cylinder->pos)
-		- 8 * dot_vecs(cylinder->pos, camera_ray->pos);
-	*d = b * b - a * c;
+	p = sub_vecs(camera_ray->dir,
+			(scl_vec(cylinder->dir,
+					dot_vecs(camera_ray->dir, cylinder->dir))));
+	q = sub_vecs(sub_vecs(camera_ray->pos, cylinder->pos),
+			scl_vec(cylinder->dir, dot_vecs(
+					sub_vecs(camera_ray->pos, cylinder->pos),
+					cylinder->dir)));
+	a = dot_vecs(p, p);
+	b = 2 * dot_vecs(p, q);
+	c = dot_vecs(q, q) - cylinder->rad * cylinder->rad;
+	*d = b * b - 4 * a * c;
 	if (*d >= 0)
 	{
-		t[0] = (-b - sqrt(*d)) / a;
-		t[1] = (-b + sqrt(*d)) / a;
+		t[0] = (-b - sqrt(*d)) / a / 2;
+		t[1] = (-b + sqrt(*d)) / a / 2;
 	}
 }
 

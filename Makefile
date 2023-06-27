@@ -21,6 +21,7 @@ SRCS = main.c mlx.c\
 		calculate/vector.c\
 		calculate/vectors.c\
 		calculate/sphere.c\
+		calculate/color.c\
 		parse/color.c\
 		parse/double.c\
 		parse/integer.c\

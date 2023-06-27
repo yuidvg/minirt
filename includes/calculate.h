@@ -6,7 +6,7 @@
 /*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/22 22:29:07 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/27 10:26:47 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ double		calculate_discriminant(t_vector3 ray_direction,
 
 // Color
 void		set_objects_color(t_scene *scene, int x, int y, double diffuse);
+t_color		add_colors(t_color color1, t_color color2);
+t_color scale_color(t_color color, double scale);
 
 // Sphere
 t_color		extract_color_components(t_color source_color);
