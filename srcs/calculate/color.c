@@ -31,3 +31,11 @@ t_color	scale_color(t_color color, double scale)
 	new_color.b = color.b * scale;
 	return (new_color);
 }
+
+int	color_to_int(t_color color)
+{
+	int	rgb;
+
+	rgb = (color.r << 16) | (color.g << 8) | color.b;
+	return (rgb);
+}

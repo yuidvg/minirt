@@ -68,7 +68,6 @@ static int	parse_cylinder(char *line, t_object *object)
 	return (0);
 }
 
-
 int	add_object(char *str, t_object **object)
 {
 	t_object	*new;

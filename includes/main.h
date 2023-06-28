@@ -20,5 +20,6 @@
 void	init_mlx(t_scene *scene);
 void	init_scene(char *filename, t_scene *scene);
 void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color);
+void	render_scene(t_scene *scene);
 
 #endif

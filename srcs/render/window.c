@@ -10,17 +10,40 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/main.h"
+#include "../includes/calculate.h"
 
-int	main(int argc, char **argv)
+t_color	get_color(t_scene *scene, t_ray camera_ray);
+
+static t_ray	get_camera_ray(int x, int y, t_camera *camera)
 {
-	t_scene	scene;
+	t_ray	camera_ray;
 
-	if (argc != 2)
-		gfree_exit(1, "Error\nInvalid number of arguments\n");
-	init_mlx(&scene);
-	init_scene(argv[1], &scene);
-	render_scene(&scene);
-	mlx_loop(scene.mlx.ptr);
-	gfree_exit(0, NULL);
+	camera_ray.pos = camera->pos;
+	camera_ray.dir.x = x - WIDTH / 2;
+	camera_ray.dir.y = y - HEIGHT / 2;
+	camera_ray.dir.z = -(WIDTH / (2.0 * tan(camera->fov / 2.0)));
+	camera_ray.dir = norm_vec(camera_ray.dir);
+	return (camera_ray);
+}
+
+void	render_scene(t_scene *scene)
+{
+	int			x;
+	int			y;
+	t_color		color;
+
+	y = 0;
+	while (y < HEIGHT)
+	{
+		x = 0;
+		while (x < WIDTH)
+		{
+			color = get_color(scene, get_camera_ray(x, y, &scene->camera));
+			my_mlx_pixel_put(scene, x, y, color_to_int(color));
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(scene->mlx.ptr, scene->mlx.window,
+		scene->mlx.image.ptr, 0, 0);
 }
