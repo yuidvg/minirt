@@ -31,7 +31,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray, t_color *color)
 	nearest_intersection = (t_ray){(t_vector3){0, 0, 0}, (t_vector3){0, 0, 0}};
 	while (object)
 	{
-		intersection = object->get_inter_point(&(t_){object, camera_ray});
+		intersection = object->get_intersection(&(t_){object, camera_ray});
 		distance = magn_vec(sub_vecs(intersection.pos,
 					camera_ray->pos));
 		if (distance < nearest_distance)
