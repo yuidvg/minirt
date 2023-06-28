@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/26 20:37:45 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/28 10:46:42 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,11 @@ double	get_diffused_light(t_scene *scene, t_ray *intersection, t_ray *ray_toward
 	intersection_with_other_object
 		= get_1st_intersection(scene->objects, ray_toward_light, NULL);
 	if (magn_vec(intersection_with_other_object.dir) == 0)
+	{
 		diffused_light = dot_vecs(intersection->dir, ray_toward_light->dir)
 			* scene->light.blightness * DIFFUSE_RATIO;
+		diffused_light = clamp(diffused_light, 0.0, 1.0);
+	}
 	return (diffused_light);
 }
 
@@ -101,8 +104,9 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 
 	diffused_light = 0;
 	intersection = get_1st_intersection(scene->objects, &camera_ray, &object_color);
-	if (magn_vec(intersection.dir) != 0)
+	if (magn_vec(intersection.dir) == 0)
 		return ((t_color){0, 0, 0});
+	ray_toward_light = get_ray_toward_light(scene, intersection);
 	diffused_light = get_diffused_light(scene, &intersection, &ray_toward_light);
 	return (add_colors(
 		scale_color(scene->ambient.color, scene->ambient.ratio),
