@@ -26,7 +26,7 @@ static int	parse_sphere(char *line, t_object *object)
 		|| !(0 <= object->rad))
 		return (1);
 	object->rad /= 2;
-	object->get_inter_point = get_intersection_sphere;
+	object->get_intersection = get_intersection_sphere;
 	return (0);
 }
 
@@ -39,12 +39,10 @@ static int	parse_plane(char *line, t_object *object)
 		|| !split[0] || !split[1] || !split[2] || split[3]
 		|| parse_vector3(split[0], &object->pos)
 		|| parse_vector3(split[1], &object->dir)
-		|| !(-1 <= object->dir.x && object->dir.x <= 1)
-		|| !(-1 <= object->dir.y && object->dir.y <= 1)
-		|| !(-1 <= object->dir.z && object->dir.z <= 1)
+		|| magn_vec(object->dir) != 1
 		|| parse_color(split[2], &object->color))
 		return (1);
-	object->get_inter_point = get_intersection_plane;
+	object->get_intersection = get_intersection_plane;
 	return (0);
 }
 
@@ -58,9 +56,7 @@ static int	parse_cylinder(char *line, t_object *object)
 		|| split[5]
 		|| parse_vector3(split[0], &object->pos)
 		|| parse_vector3(split[1], &object->dir)
-		|| !(-1 <= object->dir.x && object->dir.x <= 1)
-		|| !(-1 <= object->dir.y && object->dir.y <= 1)
-		|| !(-1 <= object->dir.z && object->dir.z <= 1)
+		|| magn_vec(object->dir) != 1
 		|| set_atod(split[2], &object->rad)
 		|| set_atod(split[3], &object->height)
 		|| parse_color(split[4], &object->color)
@@ -68,7 +64,7 @@ static int	parse_cylinder(char *line, t_object *object)
 		|| !(0 <= object->height))
 		return (1);
 	object->rad /= 2;
-	object->get_inter_point = get_intersection_cylinder;
+	object->get_intersection = get_intersection_cylinder;
 	return (0);
 }
 

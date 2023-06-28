@@ -98,7 +98,7 @@ typedef struct s_object
 	t_vector3			dir;
 	double				rad;
 	double				height;
-	t_ray				(*get_inter_point)(t_ *);
+	t_ray				(*get_intersection)(t_ *);
 	struct s_object		*next;
 }	t_object;
 
