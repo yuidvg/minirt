@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pixel.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/28 15:43:17 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:58:05 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ t_ray	get_ray_toward_light(t_light *light, t_ray intersection)
 
 	ray_toward_light.dir = norm_vec(sub_vecs(light->pos,
 				intersection.pos));
-	ray_toward_light.pos = intersection.pos;
+	ray_toward_light.pos = add_vecs(intersection.pos,
+			scl_vec(ray_toward_light.dir, 0.0001));
 	return (ray_toward_light);
 }
 
@@ -58,7 +59,9 @@ t_ray *ray_toward_light)
 	diffused_light = 0;
 	intersection_with_other_object
 		= get_1st_intersection(scene->objects, ray_toward_light, NULL);
-	if (magn_vec(intersection_with_other_object.dir) == 0)
+	if (magn_vec(intersection_with_other_object.dir) == 0 || magn_vec(sub_vecs(
+				intersection_with_other_object.pos, ray_toward_light->pos))
+		> magn_vec(sub_vecs(scene->light.pos, ray_toward_light->pos)))
 	{
 		diffused_light = dot_vecs(intersection->dir, ray_toward_light->dir)
 			* scene->light.blightness * DIFFUSE_RATIO;
