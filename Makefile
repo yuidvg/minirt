@@ -27,7 +27,9 @@ SRCS = main.c mlx.c\
 		parse/integer.c\
 		parse/object.c\
 		parse/scene.c\
-		parse/vector.c
+		parse/vector.c\
+		render/pixel.c\
+		render/window.c
 OBJSDIR = objs/
 OBJS = $(SRCS:%.c=$(OBJSDIR)%.o)
 

@@ -46,6 +46,7 @@ double		calculate_discriminant(t_vector3 ray_direction,
 void		set_objects_color(t_scene *scene, int x, int y, double diffuse);
 t_color		add_colors(t_color color1, t_color color2);
 t_color		scale_color(t_color color, double scale);
+int			color_to_int(t_color color);
 
 // Sphere
 t_color		extract_color_components(t_color source_color);

@@ -21,7 +21,7 @@ static void	parse_ambient(char *line, t_ambient *ambient)
 		|| set_atod(split[0], &ambient->ratio)
 		|| !(0 <= ambient->ratio && ambient->ratio <= 1)
 		|| parse_color(split[1], &ambient->color))
-		gfree_exit(1, "Error\nFailed to parse ambient light");
+		gfree_exit(1, "Error\nFailed to parse ambient light\n");
 }
 
 static void	parse_camera(char *line, t_camera *camera)
@@ -37,7 +37,7 @@ static void	parse_camera(char *line, t_camera *camera)
 		|| !(-1 <= camera->dir.x && camera->dir.x <= 1)
 		|| !(-1 <= camera->dir.y && camera->dir.y <= 1)
 		|| !(-1 <= camera->dir.z && camera->dir.z <= 1))
-		gfree_exit(1, "Error\nFailed to parse camera");
+		gfree_exit(1, "Error\nFailed to parse camera\n");
 }
 
 static void	parse_light(char *line, t_light *light)
@@ -50,7 +50,7 @@ static void	parse_light(char *line, t_light *light)
 		|| set_atod(split[1], &light->blightness)
 		|| !(0 <= light->blightness && light->blightness <= 1)
 		|| parse_color(split[2], &light->color))
-		gfree_exit(1, "Error\nFailed to parse light");
+		gfree_exit(1, "Error\nFailed to parse light\n");
 }
 
 void	init_scene(char *filename, t_scene *scene)
@@ -60,7 +60,7 @@ void	init_scene(char *filename, t_scene *scene)
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		gfree_exit(1, "Error\nFailed to open file");
+		gfree_exit(1, "Error\nFailed to open file\n");
 	scene->objects = NULL;
 	while (1)
 	{
@@ -73,10 +73,11 @@ void	init_scene(char *filename, t_scene *scene)
 			parse_camera(line + 2, &scene->camera);
 		else if (!ft_strncmp(line, "L ", 2))
 			parse_light(line + 2, &scene->light);
-		else if (ft_strncmp(line, "sp ", 3)
-			|| ft_strncmp(line, "pl ", 3) || ft_strncmp(line, "cy ", 3))
-			add_object(line, &scene->objects);
+		else if ((!ft_strncmp(line, "sp ", 3)
+				|| !ft_strncmp(line, "pl ", 3) || !ft_strncmp(line, "cy ", 3))
+			&& add_object(line, &scene->objects))
+			gfree_exit(1, "Error.\nFailed to parse scene.\n");
 		else
-			gfree_exit(1, "Error\nFailed to parse scene");
+			gfree_exit(1, "Error\nFailed to parse scene.\n");
 	}
 }
