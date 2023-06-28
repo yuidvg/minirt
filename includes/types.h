@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/13 14:42:03 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:14:13 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # define HEIGHT 600
 
 # define WINDOW_TITLE "miniRT"
+# define DIFFUSE_RATIO 0.8
+# define SPECULAR_RATIO 0.2
 
 typedef enum e_object_type
 {
@@ -39,10 +41,10 @@ typedef struct s_color
 	int		b;
 }	t_color;
 
-typedef struct t_ray
+typedef struct s_ray
 {
-	t_vector3	position;
-	t_vector3	orientation;
+	t_vector3	pos;
+	t_vector3	dir;
 }	t_ray;
 
 typedef struct s_image
@@ -69,14 +71,14 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	t_vector3	position;
-	t_vector3	orientation;
+	t_vector3	pos;
+	t_vector3	dir;
 	int			fov;
 }	t_camera;
 
 typedef struct s_light
 {
-	t_vector3	position;
+	t_vector3	pos;
 	double		blightness;
 	t_color		color;
 }	t_light;
@@ -92,9 +94,9 @@ typedef struct s_
 typedef struct s_object
 {
 	t_color				color;
-	t_vector3			position;
-	t_vector3			orientation;
-	double				diameter;
+	t_vector3			pos;
+	t_vector3			dir;
+	double				rad;
 	double				height;
 	t_ray				(*get_intersection)(t_ *);
 	struct s_object		*next;
