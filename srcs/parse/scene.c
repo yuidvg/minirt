@@ -73,10 +73,12 @@ void	init_scene(char *filename, t_scene *scene)
 			parse_camera(line + 2, &scene->camera);
 		else if (!ft_strncmp(line, "L ", 2))
 			parse_light(line + 2, &scene->light);
-		else if ((!ft_strncmp(line, "sp ", 3)
-				|| !ft_strncmp(line, "pl ", 3) || !ft_strncmp(line, "cy ", 3))
-			&& add_object(line, &scene->objects))
-			gfree_exit(1, "Error.\nFailed to parse scene.\n");
+		else if (!ft_strncmp(line, "sp ", 3)
+			|| !ft_strncmp(line, "pl ", 3) || !ft_strncmp(line, "cy ", 3))
+		{
+			if (add_object(line, &scene->objects))
+				gfree_exit(1, "Error.\nFailed to parse scene.\n");
+		}
 		else
 			gfree_exit(1, "Error\nFailed to parse scene.\n");
 	}
