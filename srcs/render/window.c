@@ -13,6 +13,7 @@
 #include "../includes/calculate.h"
 
 t_color	get_color(t_scene *scene, t_ray camera_ray);
+void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color);
 
 static t_ray	get_camera_ray(int x, int y, t_camera *camera)
 {
