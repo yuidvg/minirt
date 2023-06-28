@@ -34,7 +34,7 @@ t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray, t_color *color)
 		intersection = object->get_intersection(&(t_){object, camera_ray});
 		distance = magn_vec(sub_vecs(intersection.pos,
 					camera_ray->pos));
-		if (distance < nearest_distance)
+		if (magn_vec(intersection.dir) != 0 && distance < nearest_distance)
 		{
 			nearest_distance = distance;
 			nearest_intersection = intersection;
@@ -56,7 +56,8 @@ t_ray	get_ray_toward_light(t_scene *scene, t_ray intersection)
 	return (ray_toward_light);
 }
 
-double	get_diffused_light(t_scene *scene, t_ray *intersection, t_ray *ray_toward_light)
+double	get_diffused_light(t_scene *scene, t_ray *intersection,
+t_ray *ray_toward_light)
 {
 	t_ray		intersection_with_other_object;
 	double		diffused_light;
@@ -82,8 +83,13 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 
 	diffused_light = 0;
 	intersection = get_1st_intersection(scene->objects, &camera_ray, &object_color);
+	// //debug
+	// if (intersection.dir.y == -1)
+	// 	return (object_color);
 	if (magn_vec(intersection.dir) == 0)
 		return ((t_color){0, 0, 0});
+	else
+		return (object_color);
 	ray_toward_light = get_ray_toward_light(scene, intersection);
 	diffused_light = get_diffused_light(scene, &intersection, &ray_toward_light);
 	return (add_colors(
