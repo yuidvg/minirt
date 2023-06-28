@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scene.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/13 18:56:29 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:15:31 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,8 @@ void	init_scene(char *filename, t_scene *scene)
 			parse_light(line + 2, &scene->light);
 		else if (!ft_strncmp(line, "sp ", 3)
 			|| !ft_strncmp(line, "pl ", 3) || !ft_strncmp(line, "cy ", 3))
-		{
 			if (add_object(line, &scene->objects))
 				gfree_exit(1, "Error.\nFailed to parse scene.\n");
-		}
 		else
 			gfree_exit(1, "Error\nFailed to parse scene.\n");
 	}
