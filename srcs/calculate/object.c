@@ -109,6 +109,7 @@ t_ray	get_intersection_cylinder(t_ *data)
 	double		d;
 	double		t[2];
 	t_vector3	position;
+	t_vector3	a;
 
 	cylinder = data->this;
 	camera_ray = data->camera_ray;
@@ -121,8 +122,8 @@ t_ray	get_intersection_cylinder(t_ *data)
 		position = add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t[1]));
 	else
 		return ((t_ray){.pos = {0}, .dir = {0}});
-	return ((t_ray){position,
-		norm_vec(sub_vecs(sub_vecs(position, cylinder->pos),
-				scl_vec(cylinder->dir, dot_vecs(
-						sub_vecs(position, cylinder->pos), cylinder->dir))))});
+	a = sub_vecs(position, cylinder->pos);
+	return ((t_ray){.pos = position,
+		.dir = norm_vec(
+			sub_vecs(a, scl_vec(cylinder->dir, dot_vecs(a, cylinder->dir))))});
 }
