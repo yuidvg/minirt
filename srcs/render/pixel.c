@@ -88,9 +88,6 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 		= get_1st_intersection(scene->objects, &camera_ray, &object_color);
 	if (magn_vec(intersection.dir) == 0)
 		return ((t_color){0, 0, 0});
-	//debug
-	else if (intersection.dir.y == -1)
-		return ((t_color){255, 0, 0});
 	ray_toward_light = get_ray_toward_light(&scene->light, intersection);
 	diffused_light
 		= get_diffused_light(scene, &intersection, &ray_toward_light);

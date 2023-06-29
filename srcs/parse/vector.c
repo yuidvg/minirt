@@ -30,9 +30,10 @@ int	parse_normalized_vector3(char *str, t_vector3 *vector)
 {
 	if (parse_vector3(str, vector))
 		return (1);
-	if (vector->x < -1 || vector->x > 1
-		|| vector->y < -1 || vector->y > 1
-		|| vector->z < -1 || vector->z > 1)
+	if (vector->x < -1 || 1 < vector->x
+		|| vector->y < -1 || 1 < vector->y
+		|| vector->z < -1 || 1 < vector->z
+		|| (vector->x == 0 && vector->y == 0 && vector->z == 0))
 		return (1);
 	*vector = norm_vec(*vector);
 	return (0);

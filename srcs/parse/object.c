@@ -23,7 +23,7 @@ static void	parse_sphere(char *line, t_object *object)
 		|| parse_vector3(split[0], &object->pos)
 		|| set_atod(split[1], &object->rad)
 		|| parse_color(split[2], &object->color)
-		|| !(0 <= object->rad))
+		|| object->rad < 0)
 		gfree_exit(1, "Error\nFailed to parse sphere\n");
 	object->rad /= 2;
 	object->get_intersection = get_intersection_sphere;
@@ -57,8 +57,8 @@ static void	parse_cylinder(char *line, t_object *object)
 		|| set_atod(split[2], &object->rad)
 		|| set_atod(split[3], &object->height)
 		|| parse_color(split[4], &object->color)
-		|| !(0 <= object->rad)
-		|| !(0 <= object->height))
+		|| object->rad < 0
+		|| object->height < 0)
 		gfree_exit(1, "Error\nFailed to parse cylinder\n");
 	object->rad /= 2;
 	object->dir = norm_vec(object->dir);
