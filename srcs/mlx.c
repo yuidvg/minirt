@@ -3,20 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <yichinos@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/10 17:04:28 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:13:29 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/main.h"
 
-static int	mlx_exit(t_scene *scene)
+static int	mlx_exit(t_mlx *mlx)
 {
-	mlx_destroy_image(scene->mlx.ptr, scene->mlx.image.ptr);
-	mlx_destroy_window(scene->mlx.ptr, scene->mlx.window);
+	mlx_destroy_image(mlx->ptr, mlx->image.ptr);
+	mlx_destroy_window(mlx->ptr, mlx->window);
+	gfree_exit(0, NULL);
 	exit(0);
+}
+
+static int	key_hook(int key, t_scene *scene)
+{
+	if (key == KEY_ESC)
+		mlx_exit(&scene->mlx);
+	return (0);
 }
 
 void	init_mlx(t_scene *scene)
@@ -37,6 +45,7 @@ void	init_mlx(t_scene *scene)
 	if (!scene->mlx.image.addr)
 		ft_exit(-1, scene->mlx.ptr, scene->mlx.window, scene->mlx.image.ptr);
 	mlx_hook(scene->mlx.window, 17, 1L << 17, mlx_exit, scene);
+	mlx_hook(scene->mlx.window, 2, 0, key_hook, scene);
 }
 
 void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color)
