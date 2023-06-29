@@ -6,11 +6,17 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/28 17:58:05 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:21:31 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/calculate.h"
+
+static void	add_thickness(t_ray *intersection)
+{
+	intersection->pos = add_vecs(intersection->pos,
+			scl_vec(intersection->dir, 0.0001));
+}
 
 t_ray	get_1st_intersection(t_object *object, t_ray *camera_ray,
 t_color *color)
@@ -36,6 +42,7 @@ t_color *color)
 		}
 		object = object->next;
 	}
+	add_thickness(&nearest_intersection);
 	return (nearest_intersection);
 }
 
@@ -45,8 +52,7 @@ t_ray	get_ray_toward_light(t_light *light, t_ray intersection)
 
 	ray_toward_light.dir = norm_vec(sub_vecs(light->pos,
 				intersection.pos));
-	ray_toward_light.pos = add_vecs(intersection.pos,
-			scl_vec(ray_toward_light.dir, 0.0001));
+	ray_toward_light.pos = intersection.pos;
 	return (ray_toward_light);
 }
 
