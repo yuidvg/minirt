@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/28 18:21:47 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:30:09 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int	main(int argc, char **argv)
 
 // __attribute__((destructor)) static void destructor()
 // {
-//     system("leaks -q minirt");
+//	system("leaks -q minirt");
 // }

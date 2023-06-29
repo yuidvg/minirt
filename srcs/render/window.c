@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/28 15:43:17 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/29 11:40:42 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static t_ray	get_camera_ray(int x, int y, t_camera *camera)
 	t_ray	camera_ray;
 
 	camera_ray.pos = camera->pos;
-	camera_ray.dir.x = x - WIDTH / 2;
-	camera_ray.dir.y = y - HEIGHT / 2;
-	camera_ray.dir.z = -(WIDTH / (2.0 * tan(camera->fov / 2.0)));
+	camera_ray.dir.x = x;
+	camera_ray.dir.y = y;
+	camera_ray.dir.z = WIDTH / 2 / tan(camera->fov / 2);
 	camera_ray.dir = norm_vec(camera_ray.dir);
 	return (camera_ray);
 }
