@@ -48,7 +48,7 @@ t_ray	get_intersection_sphere(t_ *data)
 {
 	t_object	*sphere;
 	t_ray		*camera;
-	double		t[0];
+	double		t[2];
 	double		d;
 	t_ray		intersection;
 
