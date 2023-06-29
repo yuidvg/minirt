@@ -22,7 +22,7 @@ static t_ray	get_camera_ray(int x, int y, t_camera *camera)
 	camera_ray.pos = camera->pos;
 	camera_ray.dir.x = x - WIDTH / 2;
 	camera_ray.dir.y = y - HEIGHT / 2;
-	camera_ray.dir.z = -(WIDTH / (2.0 * tan(camera->fov / 2.0)));
+	camera_ray.dir.z = WIDTH / 2 / tan(camera->fov / 2);
 	camera_ray.dir = norm_vec(camera_ray.dir);
 	return (camera_ray);
 }
