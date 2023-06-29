@@ -30,6 +30,7 @@ t_vector3	norm_vec(t_vector3 v);
 t_vector3	add_vecs(t_vector3 v1, t_vector3 v2);
 t_vector3	sub_vecs(t_vector3 v1, t_vector3 v2);
 double		dot_vecs(t_vector3 v1, t_vector3 v2);
+t_vector3	cross_vecs(t_vector3 v1, t_vector3 v2);
 
 // double
 double		clamp(double value, double min, double max);
