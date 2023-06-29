@@ -18,21 +18,21 @@ t_ray	get_intersection_plane(t_ *data)
 	t_ray		*camera;
 	double		t;
 	t_vector3	s;
+	t_ray		intersection;
 
 	plane = data->this;
 	camera = data->camera_ray;
 	s = sub_vecs(camera->pos, plane->pos);
 	t = -(dot_vecs(s, plane->dir)
 			/ dot_vecs(camera->dir, plane->dir));
-	if (t > 0
-		&& dot_vecs(camera->dir, plane->dir) < 0)
-		return ((t_ray){add_vecs(add_vecs(s,
-					scl_vec(camera->dir, t)), plane->pos),
-			plane->dir});
-	else if (t > 0)
-		return ((t_ray){add_vecs(add_vecs(s,
-					scl_vec(camera->dir, t)), plane->pos),
-			scl_vec(plane->dir, -1)});
+	if (t > 0)
+	{
+		intersection.pos
+			= add_vecs(add_vecs(s, scl_vec(camera->dir, t)), plane->pos);
+		intersection.dir = plane->dir;
+		switch_intersection_dir(&intersection, camera->pos);
+		return (intersection);
+	}
 	return ((t_ray){.pos = {0, 0, 0}, .dir = {0, 0, 0}});
 }
 
@@ -42,6 +42,7 @@ t_ray	get_intersection_sphere(t_ *data)
 	t_ray		*camera;
 	double		t;
 	double		d;
+	t_ray		intersection;
 
 	sphere = data->this;
 	camera = data->camera_ray;
@@ -54,12 +55,14 @@ t_ray	get_intersection_sphere(t_ *data)
 	t = (-2 * dot_vecs(camera->dir, sub_vecs(camera->pos, sphere->pos))
 			- sqrt(d)) / (2 * magn_vec(camera->dir) * magn_vec(camera->dir));
 	if (d >= 0 && t >= 0)
-		return ((t_ray){
-			add_vecs(camera->pos, scl_vec(camera->dir, t)),
-			norm_vec(sub_vecs(add_vecs(camera->pos,
-						scl_vec(camera->dir, t)), sphere->pos))});
-	else
-		return ((t_ray){.pos = {0}, .dir = {0}});
+	{
+		intersection.pos = add_vecs(camera->pos, scl_vec(camera->dir, t));
+		intersection.dir = norm_vec(sub_vecs(add_vecs(camera->pos,
+						scl_vec(camera->dir, t)), sphere->pos));
+		switch_intersection_dir(&intersection, camera->pos);
+		return (intersection);
+	}
+	return ((t_ray){.pos = {0}, .dir = {0}});
 }
 
 static int	within_height(t_object *cylinder, t_ray *camera_ray, double t)
@@ -108,7 +111,7 @@ t_ray	get_intersection_cylinder(t_ *data)
 	t_ray		*camera_ray;
 	double		d;
 	double		t[2];
-	t_vector3	position;
+	t_ray		intersection;
 
 	cylinder = data->this;
 	camera_ray = data->camera_ray;
@@ -116,14 +119,17 @@ t_ray	get_intersection_cylinder(t_ *data)
 	if (d < 0)
 		return ((t_ray){.pos = {0, 0, 0}, .dir = {0, 0, 0}});
 	if (t[0] >= 0 && within_height(cylinder, camera_ray, t[0]))
-		position = add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t[0]));
+		intersection.pos
+			= add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t[0]));
 	else if (t[1] >= 0 && within_height(cylinder, camera_ray, t[1]))
-		position = add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t[1]));
+		intersection.pos
+			= add_vecs(camera_ray->pos, scl_vec(camera_ray->dir, t[1]));
 	else
 		return ((t_ray){.pos = {0}, .dir = {0}});
-	return ((t_ray){.pos = position,
-		.dir = norm_vec(
-			sub_vecs(sub_vecs(position, cylinder->pos),
-				scl_vec(cylinder->dir, dot_vecs(
-						sub_vecs(position, cylinder->pos), cylinder->dir))))});
+	intersection.dir = norm_vec(sub_vecs(sub_vecs(intersection.pos,
+					cylinder->pos), scl_vec(cylinder->dir,
+					dot_vecs(sub_vecs(intersection.pos, cylinder->pos),
+						cylinder->dir))));
+	switch_intersection_dir(&intersection, camera_ray->pos);
+	return (intersection);
 }

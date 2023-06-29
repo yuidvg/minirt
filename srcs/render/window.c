@@ -35,9 +35,10 @@ static t_ray	get_camera_ray(int x, int y, t_camera *camera)
 	t_vector3	camera_ray_dir;
 
 	set_orthonormal_basis(&esx, &esy, camera->dir);
-	ps = add_vecs(scl_vec(esx, (x - WIDTH / 2)),
-			scl_vec(esy, (y - HEIGHT / 2)));
-	dsc = scl_vec(camera->dir, WIDTH / 2 / tan(camera->fov / 2));
+	ps = add_vecs(scl_vec(esx, (double)(x - WIDTH / 2)),
+			scl_vec(esy, (double)(y - HEIGHT / 2)));
+	dsc = scl_vec(camera->dir, (double)(WIDTH / 2
+				/ tan((double)((camera->fov / 2) * M_PI / 180))));
 	camera_ray_dir
 		= scl_vec(add_vecs(dsc, ps),
 			1 / magn_vec(add_vecs(dsc, ps)));

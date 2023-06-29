@@ -21,6 +21,8 @@ t_ray		get_intersection_plane(t_ *data);
 t_ray		get_intersection_sphere(t_ *data);
 t_ray		get_intersection_cylinder(t_ *data);
 
+void		switch_intersection_dir(t_ray *intersection, t_vector3 ray_origin);
+
 // Vector
 t_vector3	scl_vec(t_vector3 v, double scalar);
 double		magn_vec(t_vector3 vector);

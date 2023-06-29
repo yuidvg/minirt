@@ -18,7 +18,8 @@
 		"calculate.h": "c",
 		"__config": "c",
 		"mlx.h": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"complex": "c"
 	},
 	"editor.formatOnSave": false
 }
