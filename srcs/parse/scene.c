@@ -31,12 +31,9 @@ static void	parse_camera(char *line, t_camera *camera)
 	split = ft_split(line, ' ');
 	if (!split || !split[0] || !split[1] || !split[2] || split[3]
 		|| parse_vector3(split[0], &camera->pos)
-		|| parse_vector3(split[1], &camera->dir)
+		|| parse_normalized_vector3(split[1], &camera->dir)
 		|| set_atoi(split[2], &camera->fov)
-		|| !(0 <= camera->fov && camera->fov <= 180)
-		|| !(-1 <= camera->dir.x && camera->dir.x <= 1)
-		|| !(-1 <= camera->dir.y && camera->dir.y <= 1)
-		|| !(-1 <= camera->dir.z && camera->dir.z <= 1))
+		|| !(0 <= camera->fov && camera->fov <= 180))
 		gfree_exit(1, "Error\nFailed to parse camera\n");
 }
 
@@ -75,11 +72,7 @@ void	init_scene(char *filename, t_scene *scene)
 			parse_light(line + 2, &scene->light);
 		else if (!ft_strncmp(line, "sp ", 3)
 			|| !ft_strncmp(line, "pl ", 3) || !ft_strncmp(line, "cy ", 3))
-		{
-			if (add_object(line, &scene->objects))
-				gfree_exit(1, "Error.\nFailed to parse scene.\n");
-
-		}
+			add_object(line, &scene->objects);
 		else
 			gfree_exit(1, "Error\nFailed to parse scene.\n");
 	}

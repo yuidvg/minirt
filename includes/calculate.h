@@ -37,6 +37,8 @@ t_vector3	cross_vecs(t_vector3 v1, t_vector3 v2);
 // double
 double		clamp(double value, double min, double max);
 double		min(double a, double b);
+double		max(double a, double b);
+
 // int			set_atod(char *str, double *num);
 
 // Calculation
