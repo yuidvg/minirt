@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/29 11:40:42 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/06/29 16:49:21 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,33 @@
 t_color	get_color(t_scene *scene, t_ray camera_ray);
 void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color);
 
+static void	set_orthonormal_basis(t_vector3 *esx, t_vector3 *esy,
+t_vector3 d)
+{
+	esx->z = -d.x
+		/ sqrt(d.x * d.x + d.z * d.z);
+	esx->y = 0;
+	esx->x = d.z
+		/ sqrt(d.x * d.x + d.z * d.z);
+	*esy = cross_vecs(d, *esx);
+}
+
 static t_ray	get_camera_ray(int x, int y, t_camera *camera)
 {
-	t_ray	camera_ray;
+	t_vector3	esx;
+	t_vector3	esy;
+	t_vector3	ps;
+	t_vector3	dsc;
+	t_vector3	camera_ray_dir;
 
-	camera_ray.pos = camera->pos;
-	camera_ray.dir.x = x;
-	camera_ray.dir.y = y;
-	camera_ray.dir.z = WIDTH / 2 / tan(camera->fov / 2);
-	camera_ray.dir = norm_vec(camera_ray.dir);
-	return (camera_ray);
+	set_orthonormal_basis(&esx, &esy, camera->dir);
+	ps = add_vecs(scl_vec(esx, (x - WIDTH / 2)),
+			scl_vec(esy, (y - HEIGHT / 2)));
+	dsc = scl_vec(camera->dir, WIDTH / 2 / tan(camera->fov / 2));
+	camera_ray_dir
+		= scl_vec(add_vecs(dsc, ps),
+			1 / magn_vec(add_vecs(dsc, ps)));
+	return ((t_ray){.pos = camera->pos, .dir = camera_ray_dir});
 }
 
 void	render_scene(t_scene *scene)
