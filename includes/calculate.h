@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   calculate.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/07/01 12:39:00 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/07/02 11:49:50 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		set_objects_color(t_scene *scene, int x, int y, double diffuse);
 t_color		add_colors(t_color color1, t_color color2);
 t_color		scale_color(t_color color, double scale);
 int			color_to_int(t_color color);
-t_color		clamp_color(t_color color)
+t_color		clamp_color(t_color color);
 
 	// Sphere
 t_color		extract_color_components(t_color source_color);
