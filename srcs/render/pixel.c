@@ -92,6 +92,6 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	diffused_light
 		= get_diffused_light(scene, &intersection, &ray_toward_light);
 	return (clamp_color(add_colors(
-			scale_color(scene->ambient.color, scene->ambient.ratio),
-			scale_color(object_color, diffused_light))));
+				scale_color(scene->ambient.color, scene->ambient.ratio),
+				scale_color(object_color, diffused_light))));
 }

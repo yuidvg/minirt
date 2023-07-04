@@ -105,7 +105,6 @@ void	init_scene(char *filename, t_scene *scene)
 		if (line == NULL)
 			break ;
 		parse_line(line, scene, parsed_acl);
-
 	}
 	if (parsed_acl[0] != 1 || parsed_acl[1] != 1 || parsed_acl[2] != 1)
 		gfree_exit(1, "Error\nFailed to parse scene.\n");
