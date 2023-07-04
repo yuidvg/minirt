@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/28 15:43:17 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/07/04 15:28:49 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ void	my_mlx_pixel_put(t_scene *scene, int x, int y, int color);
 static void	set_orthonormal_basis(t_vector3 *esx, t_vector3 *esy,
 t_vector3 d)
 {
+	if (d.x == 0 && d.z == 0)
+	{
+		esx->x = 1;
+		esx->y = 0;
+		esx->z = 0;
+		*esy = cross_vecs(d, *esx);
+		return ;
+	}
 	esx->z = -d.x
 		/ sqrt(d.x * d.x + d.z * d.z);
 	esx->y = 0;
