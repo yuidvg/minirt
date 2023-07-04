@@ -17,10 +17,11 @@ SRCSDIR = srcs/
 SRCS = main.c mlx.c\
 		calculate/double.c \
 		calculate/calculate.c\
-		calculate/object.c\
+		calculate/cylinder.c\
+		calculate/sphere.c\
+		calculate/plane.c\
 		calculate/vector.c\
 		calculate/vectors.c\
-		calculate/sphere.c\
 		calculate/color.c\
 		parse/color.c\
 		parse/double.c\

@@ -14,13 +14,13 @@
 
 int	parse_color(char *str, t_color *color)
 {
-	char	**rgb;
+	char	**rgb_str;
 
-	rgb = ft_split(str, ',');
-	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
+	rgb_str = ft_split(str, ',');
+	if (!rgb_str || !rgb_str[0] || !rgb_str[1] || !rgb_str[2] || rgb_str[3])
 		return (1);
-	if (set_atoi(rgb[0], &color->r) || set_atoi(rgb[1], &color->g)
-		|| set_atoi(rgb[2], &color->b)
+	if (set_atoi(rgb_str[0], &color->r) || set_atoi(rgb_str[1], &color->g)
+		|| set_atoi(rgb_str[2], &color->b)
 		|| !(0 <= color->r && color->r <= 255)
 		|| !(0 <= color->g && color->g <= 255)
 		|| !(0 <= color->b && color->b <= 255))

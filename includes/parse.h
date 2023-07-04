@@ -20,6 +20,7 @@ int		parse_color(char *str, t_color *color);
 int		set_atod(char *str, double *num);
 int		set_atoi(char *str, int *num);
 int		parse_vector3(char *str, t_vector3 *vec);
-int		add_object(char *str, t_object **object);
+int		parse_normalized_vector3(char *str, t_vector3 *vector);
+void	add_object(char *str, t_object **object);
 
 #endif

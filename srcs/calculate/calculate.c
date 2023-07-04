@@ -43,3 +43,12 @@ double	calculate_discriminant(t_vector3 ray_direction, t_vector3 ray_origin,
 	discriminant = b * b - 4 * a * c;
 	return (discriminant);
 }
+
+void	switch_intersection_dir(t_ray *intersection, t_vector3 ray_origin)
+{
+	t_vector3	from_intersection_to_origin;
+
+	from_intersection_to_origin = sub_vecs(ray_origin, intersection->pos);
+	if (dot_vecs(from_intersection_to_origin, intersection->dir) < 0)
+		intersection->dir = scl_vec(intersection->dir, -1);
+}

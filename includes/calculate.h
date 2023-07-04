@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/28 11:33:33 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/07/02 11:49:50 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_ray		get_intersection_plane(t_ *data);
 t_ray		get_intersection_sphere(t_ *data);
 t_ray		get_intersection_cylinder(t_ *data);
 
+void		switch_intersection_dir(t_ray *intersection, t_vector3 ray_origin);
+
 // Vector
 t_vector3	scl_vec(t_vector3 v, double scalar);
 double		magn_vec(t_vector3 vector);
@@ -30,10 +32,13 @@ t_vector3	norm_vec(t_vector3 v);
 t_vector3	add_vecs(t_vector3 v1, t_vector3 v2);
 t_vector3	sub_vecs(t_vector3 v1, t_vector3 v2);
 double		dot_vecs(t_vector3 v1, t_vector3 v2);
+t_vector3	cross_vecs(t_vector3 v1, t_vector3 v2);
 
 // double
 double		clamp(double value, double min, double max);
 double		min(double a, double b);
+double		max(double a, double b);
+
 // int			set_atod(char *str, double *num);
 
 // Calculation
@@ -47,8 +52,9 @@ void		set_objects_color(t_scene *scene, int x, int y, double diffuse);
 t_color		add_colors(t_color color1, t_color color2);
 t_color		scale_color(t_color color, double scale);
 int			color_to_int(t_color color);
+t_color		clamp_color(t_color color);
 
-// Sphere
+	// Sphere
 t_color		extract_color_components(t_color source_color);
 t_color		calculate_shade_color(t_scene *scene,
 				double diffuse, t_color color);
