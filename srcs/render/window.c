@@ -58,7 +58,7 @@ void	render_scene(t_scene *scene)
 		while (x < WIDTH)
 		{
 			color = get_color(scene, get_camera_ray(x, y, &scene->camera));
-			my_mlx_pixel_put(scene, x, HEIGHT - y - 1, color_to_int(color));
+			my_mlx_pixel_put(scene, x, y, color_to_int(color));
 			x++;
 		}
 		y++;
