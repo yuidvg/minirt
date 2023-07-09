@@ -6,7 +6,7 @@
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/06/28 18:21:21 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/07/09 12:05:58 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	init_scene(char *filename, t_scene *scene)
 	char	*line;
 	int		parsed_acl[3];
 
+	if (filename_check(filename))
+		gfree_exit(1, "Error\nFailed to open file\n");
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 		gfree_exit(1, "Error\nFailed to open file\n");
@@ -105,7 +107,6 @@ void	init_scene(char *filename, t_scene *scene)
 		if (line == NULL)
 			break ;
 		parse_line(line, scene, parsed_acl);
-
 	}
 	if (parsed_acl[0] != 1 || parsed_acl[1] != 1 || parsed_acl[2] != 1)
 		gfree_exit(1, "Error\nFailed to parse scene.\n");

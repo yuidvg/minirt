@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pixel.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yichinos <$yichinos@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/07/01 12:39:31 by yichinos         ###   ########.fr       */
+/*   Updated: 2023/07/09 11:23:33 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,6 @@ t_color	get_color(t_scene *scene, t_ray camera_ray)
 	diffused_light
 		= get_diffused_light(scene, &intersection, &ray_toward_light);
 	return (clamp_color(add_colors(
-			scale_color(scene->ambient.color, scene->ambient.ratio),
-			scale_color(object_color, diffused_light))));
+				scale_color(scene->ambient.color, scene->ambient.ratio),
+				scale_color(object_color, diffused_light))));
 }
