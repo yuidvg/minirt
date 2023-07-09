@@ -12,7 +12,7 @@ MLXDIR = /usr/local/lib/
 MLXINCLUDE = /usr/local/include/
 
 #Mandatory
-NAME = minirt
+NAME = miniRT
 SRCSDIR = srcs/
 SRCS = main.c mlx.c\
 		calculate/double.c \
