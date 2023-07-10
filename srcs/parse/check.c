@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yichinos <yichinos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/09 16:23:31 by ynishimu          #+#    #+#             */
-/*   Updated: 2023/07/09 12:04:38 by yichinos         ###   ########.fr       */
+/*   Created: 2023/07/09 11:50:50 by yichinos          #+#    #+#             */
+/*   Updated: 2023/07/09 12:04:30 by yichinos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_H
-# define PARSE_H
+#include "../../includes/parse.h"
 
-# include "libs.h"
-# include "types.h"
+int	filename_check(char *filename)
+{
+	char	*file_last_name;
 
-int		parse_color(char *str, t_color *color);
-int		filename_check(char *filename);
-int		set_atod(char *str, double *num);
-int		set_atoi(char *str, int *num);
-int		parse_vector3(char *str, t_vector3 *vec);
-int		parse_normalized_vector3(char *str, t_vector3 *vector);
-void	add_object(char *str, t_object **object);
-
-#endif
+	file_last_name = ft_strrchr(filename, '/');
+	if (file_last_name)
+		file_last_name++;
+	else
+		file_last_name = filename;
+	if (ft_strlen(file_last_name) <= ft_strlen(".rt") || \
+		ft_strncmp(file_last_name + ft_strlen(file_last_name) \
+		- ft_strlen(".rt"), ".rt", 4))
+		return (1);
+	return (0);
+}
